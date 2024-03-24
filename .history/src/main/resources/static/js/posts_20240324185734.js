@@ -1,0 +1,17 @@
+/*!
+* Script for displaying posts that users created. Posts will be downloaded from database.
+*/
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/api/posts')
+        .then(response => response.json())
+        .then(posts => {
+            const postsContainer = document.getElementById('posts-container');
+            posts.forEach(element => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `<h2>${element.postId}</h2><p>${element.userId}</p>`;
+                postsContainer.appendChild(postElement);
+            });
+        })
+        .catch(error => console.error('Error', error));
+})
