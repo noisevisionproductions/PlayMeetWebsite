@@ -18,28 +18,30 @@
 
 </head>
 
-
 <body>
-    <!-- Contener for posts displaying -->
     <div class="container">
-        <h1 class="posts-header"> Wszystkie posty:</h1>
+        <h1 class="posts-header">Wszystkie posty:</h1>
         <div id="posts-container">
-            <h2 class="post-sport"></h2>
-            <span class="post-date">Data</span>
-
-            <span class="post-singup"><i class="fas fa-heart"></i></span>
-        </div>
-        <div class="post-content">
-            <p>Treść</p>
-        </div>
-        <div class="post-footer">
-            <span class="post-creator">Stworzyciel</span>
-            <span class="post-chat">
-                <i class="fas fa-comment">Chat </i>
-            </span>
+            <!-- Individual post example -->
+            <div class="post">
+                <div class="post-header">
+                    <img src="assets/post/sample_avatar.webp" alt="Avatar użytkownika" class="post-avatar">
+                    <h2 class="post-sportType">Title of the Post</h2>
+                    <span class="post-date">Date Posted</span>
+                </div>
+                <div class="post-content">
+                    Content of the post...
+                </div>
+                <div class="post-footer">
+                    <div class="post-tags">Tags: ExampleTag</div>
+                    <div class="post-comments-count">Comments: 10</div>
+                </div>
+            </div>
+            <!-- Additional posts would be similarly structured -->
         </div>
     </div>
     <script src="js/posts.js"></script>
 </body>
+
 
 </html>

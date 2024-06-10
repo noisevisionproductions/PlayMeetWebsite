@@ -289,8 +289,23 @@ summary {
 }
 
 .img-fluid {
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-fluid:hover {
+    cursor: zoom-in;
+}
+
+.zoomed:hover {
+    cursor: zoom-out;
+}
+
+.zoomed {
+    transform: scale(2);
 }
 
 .container {
@@ -888,6 +903,20 @@ summary {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
+.text-problem-solving {
+  --bs-text-opacity: 1;
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 40px;
+}
+
+
+.text-black-problem-solving{
+  --bs-text-opacity: 1;
+  color: rgba(0, 0, 0, 0.5) !important;
+  text-align: center;
+}
+
 .bg-light {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
@@ -897,6 +926,7 @@ summary {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-black-rgb), var(--bs-bg-opacity)) !important;
 }
+
 @media (min-width: 768px) {
   .mb-md-0 {
     margin-bottom: 0 !important;
@@ -962,15 +992,15 @@ body {
   }
   #mainNav .navbar-brand {
     padding: 0.5rem 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.75);
   }
   #mainNav .nav-link {
     transition: none;
     padding: 2rem 1.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.75);
   }
   #mainNav .nav-link:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 1);
   }
   #mainNav .nav-link:active {
     color: #fff;
@@ -1008,14 +1038,13 @@ body {
   letter-spacing: 0.15rem;
   border: 0;
 }
-
 .masthead {
   position: relative;
   width: 100%;
   height: auto;
   min-height: 35rem;
   padding: 15rem 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("../assets/img/background.png");
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), url("../assets/img/background.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -1023,14 +1052,13 @@ body {
 }
 .masthead h1, .masthead .h1 {
   font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 2.5rem;
-  line-height: 2.5rem;
-  letter-spacing: 0.8rem;
-  background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
-          background-clip: text;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.4rem;
+  padding: 4rem 0;
+  color: rgba(255, 255, 255, 0.9);
 }
+
 .masthead h2, .masthead .h2 {
   max-width: 20rem;
   font-size: 1rem;
@@ -1047,8 +1075,8 @@ body {
     padding: 0;
   }
   .masthead h1, .masthead .h1 {
-    font-size: 6.5rem;
-    line-height: 6.5rem;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
     letter-spacing: 0.8rem;
   }
   .masthead h2, .masthead .h2 {
@@ -1066,7 +1094,7 @@ body {
 }
 
 .projects-section {
-  padding: 10rem 0;
+  padding: 3em 0;
 }
 .projects-section .featured-text {
   padding: 2rem;
@@ -1088,7 +1116,7 @@ body {
 }
 
 .contact-section {
-  padding-top: 5rem;
+  padding-top: 3rem;
 }
 .contact-section .card {
   border: 0;
@@ -1126,7 +1154,7 @@ body {
 }
 
 .footer {
-  padding: 5rem 0;
+  margin-top: auto;
 }
 
 .cookie-consent-container {
@@ -1142,6 +1170,7 @@ body {
 
 .cookie-consent-container p {
   margin: 10px 0;
+  animation: slideIn 0.75s ease-out;
 }
 
 .cookie-consent-container button {
@@ -1150,4 +1179,134 @@ body {
   border: none;
   padding: 10px 20px;
   cursor: pointer;
+  animation: slideIn 0.75s ease-out
 }
+
+@keyframes slideIn {
+    from {transform: translateY(100%);}
+    to {transform: translateY(0);}
+}
+
+.question-container {
+      text-align: center;
+      background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.9) 75%, rgba(0, 0, 0, 0.8) 100%);
+      padding: 60px;
+ }
+
+  .question {
+      margin-bottom: 60px; /* Zwiększamy odstęp pod pytaniem */
+  }
+
+  .list-container {
+      display: flex;
+      justify-content: space-around;
+  }
+
+.list-left {
+    margin-right: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.list-right {
+    margin-left: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+  .list-left li, .list-right li {
+      margin-bottom: 35px; /* Zwiększamy odstęp między punktami */
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      text-align: justify;
+  }
+
+  .list-left li img, .list-right li img {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      vertical-align: middle;
+  }
+
+@media (max-width: 600px) {
+   .small-text-guide {
+        max-width: 80%; /* Zmniejszamy maksymalną szerokość */
+        padding: 0 10px;
+        margin: auto; /* Dodajemy marginesy */
+    }
+    .list-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .list-left, .list-right {
+        margin: 0;
+    }
+}
+
+.container-guide {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+}
+
+.column-guide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bold-guide {
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.small-text-guide {
+    text-align: center;
+    max-width: 80%;
+    padding: 0 10px;
+    margin: auto;
+}
+
+.icon-guide {
+    width: 100px;
+    height: 100px;
+    margin-top: 30px;
+    display: flex; /* Dodane */
+    justify-content: center; /* Dodane */
+    align-items: center; /* Dodane */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.container-google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-google-play {
+    animation: pulse 2s infinite;
+    padding: 20px;
+    width: 75%;
+    margin: auto;
+    display: block;
+}
+

@@ -13,21 +13,53 @@ document.addEventListener('DOMContentLoaded', function () {
             posts.forEach(element => {
                 const postElement = document.createElement('div');
                 postElement.className = 'post';
-                postElement.innerHTML =
-                    `
-                <div class="post-header">
-                    <h2 class="post-title">${element.sportType}</h2>
-                    <span class="post-date">${element.dateTime}</span>
-                    <span class="post-like"><i class="fas fa-heart"></i></span>
-                </div>
-                <div class="post-content">
-                    <p>${element.skillLevel}</p>
-                </div>
-                <div class="post-footer">
-                    <span class="post-author">${element.peopleStatus}</span>
-                    <span class="post-comments"><i class="fas fa-comment"></i> ${element.cityName} komentarze</span>
-                </div>
-            `;
+
+                // Creating header
+                const postHeader = document.createElement('div');
+                postHeader.className = 'post-header';
+
+                const userAvatar = document.createElement('img');
+                userAvatar.src = element.avatar || 'assets/post/sample_avatar.png'; // Fallback to a default avatar if none provided
+                userAvatar.alt = 'Avatar';
+                userAvatar.className = 'post-avatar';
+
+                const postTitle = document.createElement('h2');
+                postTitle.className = 'post-sportType';
+                postTitle.textContent = element.sportType; // Assuming `title` is part of your JSON
+
+                const postDate = document.createElement('span');
+                postDate.className = 'post-date';
+                postDate.textContent = element.dateTime; // Format as needed
+
+                postHeader.appendChild(userAvatar);
+                postHeader.appendChild(postTitle);
+                postHeader.appendChild(postDate);
+
+                // Creating post content
+                const postContent = document.createElement('div');
+                postContent.className = 'post-content';
+                postContent.textContent = element.cityName; // Assuming `content` is part of your JSON
+
+                // Creating footer
+                const postFooter = document.createElement('div');
+                postFooter.className = 'post-footer';
+
+                const postTags = document.createElement('div');
+                postTags.className = 'post-skillLevel';
+                postTags.textContent = element.skillLevel;
+
+                const postCommentsCount = document.createElement('div');
+                postCommentsCount.className = 'post-skillLevel';
+                postTags.textContent = element.signedUpCount + "/" + element.howManyPeopleNeeded;
+
+                postFooter.appendChild(postTags);
+                postFooter.appendChild(postCommentsCount);
+
+                // Adding everything to the post
+                postElement.appendChild(postHeader);
+                postElement.appendChild(postContent);
+                postElement.appendChild(postFooter);
+
                 postsContainer.appendChild(postElement);
             });
         })

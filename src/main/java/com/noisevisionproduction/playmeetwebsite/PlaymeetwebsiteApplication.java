@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /**
- * Main class in Spring Boot application.
+ * Main clas in Spring Boot application.
  * 
  * @SpringBootApplication is special form @Configuration annotation, which
  *                        automatically configure

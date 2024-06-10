@@ -22,22 +22,48 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.post-header,
-.post-footer {
+.post-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.post-sport,
-.post-date,
+.post-avatar {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.post-sportType {
+    margin-right: 5px;
+    text-align: center;
+    margin: 0 20px;
+    color: blue;
+    flex-grow: 1;
+}
+
+.post-skillLevel {
+    margin: 0 20px;
+
+}
+
+.post-date {
+    margin-right: 5px;
+    color: blue;
+    flex-shrink: 0;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
 .post-chat {
     margin-right: 5px;
     color: blue;
-}
-
-.post-title {
-    margin: 0;
+    flex-grow: 1;
 }
 
 .post h2 {
