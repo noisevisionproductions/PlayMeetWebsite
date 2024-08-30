@@ -1,47 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posty</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet" />
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/posts.css" rel="stylesheet" />
+    <link href="css/posts.css" rel="stylesheet"/>
 
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="posts-header">Wszystkie posty:</h1>
-        <div id="posts-container">
-            <!-- Individual post example -->
-            <div class="post">
-                <div class="post-header">
-                    <img src="assets/post/sample_avatar.webp" alt="Avatar użytkownika" class="post-avatar">
-                    <h2 class="post-sportType">Title of the Post</h2>
-                    <span class="post-date">Date Posted</span>
-                </div>
-                <div class="post-content">
-                    Content of the post...
-                </div>
-                <div class="post-footer">
-                    <div class="post-tags">Tags: ExampleTag</div>
-                    <div class="post-comments-count">Comments: 10</div>
+<div class="container">
+    <h1 class="posts-header">Wszystkie posty:</h1>
+    <div id="posts-container">
+        <!-- Individual post -->
+        <div th:each="post : ${posts}" class="post">
+            <div class="post-header">
+                <img th:src="${post.avatar != null} ? ${post.avatar} : 'assets/post/sample_avatar.png'"
+                     alt="Avatar użytkownika" class="post-avatar" src="">
+                <h2 class="post-content" th:text="${post.cityName}"> Miasto </h2>
+                    <span class="post-date" th:text="${post.dateTime}">Data</span>
+            </div>
+            <div class="">
+                <h2 class="post-sportType" th:text="${post.sportType}">Sport</h2>
+            </div>
+                <div class="post-skillLevel" th:text="${post.skillLevel}">Poziom umiejętności</div>
+            <div class="post-footer">
+                <div class="post-skillLevel" th:text="${post.signedUpCount + '/' + post.howManyPeopleNeeded}">Liczba
+                    zapisanych/Poszukiwanych osób
                 </div>
             </div>
-            <!-- Additional posts would be similarly structured -->
         </div>
+        <!-- Additional posts would be similarly structured -->
     </div>
-    <script src="js/posts.js"></script>
+</div>
 </body>
-
-
 </html>
