@@ -15,8 +15,8 @@ public class ContentController {
         return "faq";
     }
 
-   /* @GetMapping("/posts")
-    public String showPostPage() {
-        return "posts";
-    }*/
+    @GetMapping("/")
+    public String home() {
+        return "landing_page";
+    }
 }

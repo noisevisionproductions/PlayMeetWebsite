@@ -3,11 +3,13 @@ package com.noisevisionproduction.playmeetwebsite.PostsManagement;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.google.firebase.internal.FirebaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,7 +48,8 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public String showPostPage(Model model) throws InterruptedException, ExecutionException {
+    public String showPostPage(Model model, @RequestHeader(value = "Authorization", required = false) String authHeader)
+            throws InterruptedException, ExecutionException {
         List<PostModel> posts = postService.getAllPostsWithRegistrationsAndUsers();
         model.addAttribute("posts", posts);
         return "posts";  // odniesienie do pliku Thymeleaf posts.html
@@ -56,4 +59,5 @@ public class PostController {
     public List<PostModel> getPosts() throws InterruptedException, ExecutionException {
         return postService.getAllPostsWithRegistrationsAndUsers();
     }
+
 }

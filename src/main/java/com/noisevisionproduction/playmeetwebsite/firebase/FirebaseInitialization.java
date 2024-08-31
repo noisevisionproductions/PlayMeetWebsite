@@ -3,6 +3,9 @@ package com.noisevisionproduction.playmeetwebsite.firebase;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import com.google.firebase.auth.FirebaseAuth;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -15,20 +18,19 @@ import jakarta.annotation.PostConstruct;
  * Class that initialize connection with Firebase using Firebase Admin SDK.
  * It loads credentials and initializes credentials from my Firebase app.
  * It allows to connect to Firebase services like database.
- * 
+ *
  * @Service means that class is service component, which means that it is
- *          automatically detected on start and can be injected as dependency in
- *          others app components.
- * 
+ * automatically detected on start and can be injected as dependency in
+ * others app components.
  * @PostConstruct is used to mark method that should be called on the start
- *                class constructor,
- *                but before returning it to the Spring container.
+ * class constructor,
+ * but before returning it to the Spring container.
  */
-@Service
+@Configuration
 public class FirebaseInitialization {
 
-    @PostConstruct
-    public void initialization() {
+    @Bean
+    public FirebaseAuth initialization() {
         try {
             FileInputStream serviceAccount = new FileInputStream(
                     "C:/Users/noise/Desktop/Java/Projects/PlayMeetWebsite/config-firebase.json");
@@ -45,5 +47,6 @@ public class FirebaseInitialization {
         } catch (IOException e) {
             System.out.println("Error connecting to firebase: " + e.getMessage());
         }
+        return FirebaseAuth.getInstance();
     }
 }

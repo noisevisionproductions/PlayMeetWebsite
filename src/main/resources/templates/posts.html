@@ -61,12 +61,13 @@
                 <div>Zapisani:
                     <div th:if="${post.registrations.isEmpty()}">Brak zapisanych</div>
                     <div th:each="user : ${post.registrations}">
-                        <img th:src="${user.avatar}" alt="Avatar" class="user-avatar">
+                        <img th:src="${user.avatar}" alt="Avatar" class="post-avatar">
                     </div>
                 </div>
             </div>
         </details>
     </div>
 </div>
+
 </body>
 </html>

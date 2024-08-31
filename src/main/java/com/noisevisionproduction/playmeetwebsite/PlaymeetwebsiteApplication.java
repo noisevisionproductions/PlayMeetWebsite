@@ -2,7 +2,6 @@ package com.noisevisionproduction.playmeetwebsite;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /**
  * Main clas in Spring Boot application.
@@ -14,9 +13,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  *                        security, so on the app start it won't ask for admin
  *                        credentials.
  */
-@SpringBootApplication(exclude = {
-        SecurityAutoConfiguration.class
-})
+
+@SpringBootApplication
 public class PlaymeetwebsiteApplication {
 
     public static void main(String[] args) {

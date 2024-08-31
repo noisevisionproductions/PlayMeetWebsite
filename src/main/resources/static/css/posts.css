@@ -105,6 +105,7 @@ body {
 
 .post-more-info-summary {
     cursor: pointer;
+    user-select: none;
     background: #ddd;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -126,6 +127,8 @@ body {
     font-size: 20px;
     grid-template-columns: max-content auto;
     gap: 10px 20px;
+    max-height: 0;
+    overflow: hidden;
 }
 
 .post-more-info-content > div {
@@ -134,10 +137,10 @@ body {
 
 .post-more-info[open] .post-more-info-content {
     display: grid;
+    max-height: 800px;
 }
 
 .post[open] {
-    max-height: 800px;
     overflow: hidden;
 }
 
