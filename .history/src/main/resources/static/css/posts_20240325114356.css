@@ -1,0 +1,74 @@
+body {
+    font-family: "Nunito", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.post {
+    background: #fff;
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-avatar {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-sportType {
+    margin-right: 5px;
+    color: blue;
+    flex-grow: 1;
+}
+
+
+.post-date {
+    margin-right: 5px;
+    color: blue;
+    flex-grow: 1;
+}
+
+.post-chat {
+    margin-right: 5px;
+    color: blue;
+    flex-grow: 1;
+}
+
+.post-title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.post h2 {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Varela Round", sans-serif;
+}
