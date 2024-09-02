@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 google-services.json
 config-firebase.json
+keys.properties
 
 ### STS ###
 .apt_generated

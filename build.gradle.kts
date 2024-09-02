@@ -44,6 +44,8 @@ dependencies {
     // Firebase dependencies
     implementation("com.google.firebase:firebase-admin:9.2.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    // Tests dependencies
+    testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }
