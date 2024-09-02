@@ -21,12 +21,12 @@ class FirebaseUserInitializeTest {
     private FirebaseUserInitialize firebaseUserInitializeTest;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void verifyTokenTest() throws Exception {
+    public void verifyTokenTest() throws Exception {
         String idToken = "idTokenTest";
         FirebaseToken firebaseTokenMocked = mock(FirebaseToken.class);
 

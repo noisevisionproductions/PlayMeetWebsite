@@ -1,8 +1,10 @@
 package com.noisevisionproduction.playmeetwebsite.firebase;
 
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.cloud.FirestoreClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -30,6 +32,12 @@ public class FirebaseInitializationTest {
 
     @Mock
     private FirebaseApp mockFirebaseApp;
+
+    @Mock
+    private FirebaseAuth firebaseAuthMocked;
+
+    @Mock
+    private Firestore firestoreMocked;
 
     private FirebaseInitialization firebaseInitialization;
 
@@ -74,14 +82,25 @@ public class FirebaseInitializationTest {
     @Test
     public void testFirebaseAuthInitialization() {
         try (MockedStatic<FirebaseAuth> firebaseAuthMockedStatic = mockStatic(FirebaseAuth.class)) {
-            FirebaseAuth mockFirebaseAuth = mock(FirebaseAuth.class);
             firebaseAuthMockedStatic.when(() -> FirebaseAuth.getInstance(mockFirebaseApp))
-                    .thenReturn(mockFirebaseAuth);
+                    .thenReturn(firebaseAuthMocked);
 
             FirebaseAuth firebaseAuth = firebaseInitialization.firebaseAuth(mockFirebaseApp);
 
             assertNotNull(firebaseAuth);
             firebaseAuthMockedStatic.verify(() -> FirebaseAuth.getInstance(mockFirebaseApp));
+        }
+    }
+
+    @Test
+    public void testFirestoreInitialization() {
+        try (MockedStatic<FirestoreClient> firestoreClientMockedStatic = mockStatic(FirestoreClient.class)) {
+            firestoreClientMockedStatic.when(FirestoreClient::getFirestore).thenReturn(firestoreMocked);
+
+            Firestore firestore = firebaseInitialization.firestore();
+
+            assertNotNull(firestore);
+            firestoreClientMockedStatic.verify(FirestoreClient::getFirestore);
         }
     }
 }
