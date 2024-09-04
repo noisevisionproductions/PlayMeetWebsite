@@ -18,7 +18,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/posts", "/posts/api", "/faq", "/privacy_policy").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
-                        .requestMatchers("/verifyToken").permitAll()
+                        .requestMatchers("/403").permitAll()
+                        .requestMatchers("/verifyToken").permitAll()  // Permit access to /verifyToken
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form

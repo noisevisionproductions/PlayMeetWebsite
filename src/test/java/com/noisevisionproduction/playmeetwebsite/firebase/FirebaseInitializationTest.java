@@ -5,12 +5,13 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.FirebaseDatabase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -40,11 +41,15 @@ public class FirebaseInitializationTest {
     @Mock
     private Firestore firestoreMocked;
 
+    @Mock
+    private FirebaseDatabase firebaseDatabaseMocked;
+
     private FirebaseInitialization firebaseInitialization;
 
     // loading instance of a FirebaseInitialization class in order to test everything properly
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         firebaseInitialization = new FirebaseInitialization(configPath, databaseUrl);
     }
 
@@ -102,6 +107,20 @@ public class FirebaseInitializationTest {
 
             assertNotNull(firestore);
             firestoreClientMockedStatic.verify(FirestoreClient::getFirestore);
+        }
+    }
+
+    @Test
+    public void testFirebaseDatabaseInitialization() {
+        try (MockedStatic<FirebaseDatabase> firebaseDatabaseMockedStatic = mockStatic(FirebaseDatabase.class)) {
+            firebaseDatabaseMockedStatic.when(() -> FirebaseDatabase.getInstance(mockFirebaseApp)).thenReturn(firebaseDatabaseMocked);
+
+            FirebaseDatabase firebaseDatabase = firebaseInitialization.firebaseDatabase(mockFirebaseApp);
+
+            assertNotNull(firebaseDatabase);
+            assertEquals(firebaseDatabaseMocked, firebaseDatabase);
+
+            firebaseDatabaseMockedStatic.verify(() -> FirebaseDatabase.getInstance(mockFirebaseApp));
         }
     }
 }

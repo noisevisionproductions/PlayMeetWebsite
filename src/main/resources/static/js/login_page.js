@@ -49,7 +49,6 @@ const handleLogin = async () => {
         }
 
         const data = await response.text();
-        console.log(data);
         $('#message').text('Zalogowano').css('color', 'green');
     } catch (error) {
         console.error('Błąd podczas logowania:', error);

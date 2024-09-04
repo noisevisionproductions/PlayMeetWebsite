@@ -17,7 +17,12 @@ public class ContentController {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String landingPage() {
         return "landing_page";
+    }
+
+    @GetMapping("/403")
+    public String accessDenied() {
+        return "403";
     }
 }

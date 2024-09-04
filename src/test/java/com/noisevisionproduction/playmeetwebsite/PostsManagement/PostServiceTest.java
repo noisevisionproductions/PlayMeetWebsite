@@ -36,7 +36,7 @@ class PostServiceTest {
     }
 
     @Test
-    void testGetAllPostsSuccess() throws ExecutionException, InterruptedException {
+    public void testGetAllPostsSuccess() throws ExecutionException, InterruptedException {
         List<PostModel> posts = new ArrayList<>();
         PostModel postModel = new PostModel();
         postModel.setPostId("post1");

@@ -1,19 +1,25 @@
 package com.noisevisionproduction.playmeetwebsite.userManagement;
 
 import com.google.firebase.database.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class UserService {
+public class UserService extends LogsPrint {
+
+    private final FirebaseDatabase firebaseDatabase;
+
+    public UserService(FirebaseDatabase firebaseDatabase) {
+        this.firebaseDatabase = firebaseDatabase;
+    }
 
     public CompletableFuture<UserModel> getUserById(String userId) {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userId);
-
         CompletableFuture<UserModel> completableFuture = new CompletableFuture<>();
+
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -24,6 +30,7 @@ public class UserService {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 completableFuture.completeExceptionally(databaseError.toException());
+                logError("Error realtime database ", databaseError.toException());
             }
         });
         return completableFuture;
