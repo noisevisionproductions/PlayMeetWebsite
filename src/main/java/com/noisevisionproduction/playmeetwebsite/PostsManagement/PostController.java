@@ -56,7 +56,6 @@ public class PostController extends LogsPrint {
             model.addAttribute("error", "Error fetching posts");
             return "error";
         }
-
         return "posts";
     }
 }

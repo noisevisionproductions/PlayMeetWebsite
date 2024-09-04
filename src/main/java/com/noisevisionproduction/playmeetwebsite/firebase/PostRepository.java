@@ -1,27 +1,25 @@
 package com.noisevisionproduction.playmeetwebsite.firebase;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import com.noisevisionproduction.playmeetwebsite.PostsManagement.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
-import com.noisevisionproduction.playmeetwebsite.PostsManagement.PostModel;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Class is responsible for access to posts informations from Firestore.
+ * Class is responsible for access to posts information from Firestore.
  *
  * @Service annotation indicates that this class is service component in Spring,
  * which will be automatically
  * detected during path scanning and creates from them Beans
- * (singletones), which can be injected as dependencies
+ * (singletons), which can be injected as dependencies
  * in other parts of the Spring application.
  */
 @Service
