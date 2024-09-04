@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 class PostRepositoryTest {
 
     @Mock

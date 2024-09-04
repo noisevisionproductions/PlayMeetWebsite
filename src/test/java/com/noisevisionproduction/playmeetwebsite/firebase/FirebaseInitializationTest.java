@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 // Test checks if Firebase and its services works properly
-@SpringJUnitConfig
+@SpringJUnitConfig // Used this annotation since it is more lightweight compared to @SpringBootTest
 @TestPropertySource(locations = "classpath:keys.properties")
 public class FirebaseInitializationTest {
 
