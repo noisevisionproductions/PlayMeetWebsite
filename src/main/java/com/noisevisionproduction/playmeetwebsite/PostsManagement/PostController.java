@@ -1,19 +1,14 @@
 package com.noisevisionproduction.playmeetwebsite.PostsManagement;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import com.google.firebase.internal.FirebaseService;
+import com.noisevisionproduction.playmeetwebsite.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.noisevisionproduction.playmeetwebsite.firebase.PostRepository;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Class acts as an API endpoint for posts operations such as downloading the
@@ -42,22 +37,26 @@ import com.noisevisionproduction.playmeetwebsite.firebase.PostRepository;
  */
 @Controller
 @RequestMapping("/posts")
-public class PostController {
+public class PostController extends LogsPrint {
+
+    private final PostService postService;
 
     @Autowired
-    private PostService postService;
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
-    public String showPostPage(Model model, @RequestHeader(value = "Authorization", required = false) String authHeader)
-            throws InterruptedException, ExecutionException {
-        List<PostModel> posts = postService.getAllPostsWithRegistrationsAndUsers();
-        model.addAttribute("posts", posts);
-        return "posts";  // odniesienie do pliku Thymeleaf posts.html
-    }
+    public String showPostPage(Model model) {
+        try {
+            List<PostModel> posts = postService.getAllPosts();
+            model.addAttribute("posts", posts);
+        } catch (InterruptedException | ExecutionException e) {
+            logError("Error fetching posts ", e);
+            model.addAttribute("error", "Error fetching posts");
+            return "error";
+        }
 
-    @GetMapping("/api")
-    public List<PostModel> getPosts() throws InterruptedException, ExecutionException {
-        return postService.getAllPostsWithRegistrationsAndUsers();
+        return "posts";
     }
-
 }
