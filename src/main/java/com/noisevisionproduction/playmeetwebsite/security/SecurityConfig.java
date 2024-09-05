@@ -17,6 +17,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/posts", "/posts/api", "/faq", "/privacy_policy").permitAll()
+                        .requestMatchers("/api/config/firebase").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
                         .requestMatchers("/403").permitAll()
                         .requestMatchers("/verifyToken").permitAll()  // Permit access to /verifyToken

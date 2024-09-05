@@ -38,5 +38,3 @@ out/
 
 ### VS Code ###
 .vscode/
-firebase_config.js
-.login_page.js

@@ -6,12 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "purgecss": "purgecss --config purgecss.config.js --output src/main/resources/static/css/cleaned"
-  }
-,
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "purgecss": "^5.0.0"
+    "purgecss": "^5.0.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }

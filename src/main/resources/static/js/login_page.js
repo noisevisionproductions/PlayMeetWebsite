@@ -4,37 +4,41 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/fireba
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js'
 import { signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
 
-// Konfiguracja Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyA2o_c5Z2qWyyl04Tymo0pKe_Ue0ZqlhB0",
-    authDomain: "zagrajmy-b418d.firebaseapp.com",
-    projectId: "zagrajmy-b418d",
-    storageBucket: "zagrajmy-b418d.appspot.com",
-    messagingSenderId: "114161405415850164738",
-    appId: "AIzaSyA2o_c5Z2qWyyl04Tymo0pKe_Ue0ZqlhB0"
+let app;
+let auth;
+
+const fetchFirebaseConfig = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/config/firebase');
+        if (!response.ok) {
+            throw new Error('Failed to load Firebase config');
+        }
+        const firebaseConfig = await response.json();
+        // Initialize Firebase with config fetched from the backend
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+    } catch (error) {
+        console.error('Error fetching Firebase config:', error);
+    }
 };
 
-// Inicjalizacja Firebase
-const app = initializeApp(firebaseConfig);
-
-// Uzyskanie referencji do usługi auth
-const auth = getAuth(app);
-
-// Funkcja logowania z użyciem emaila i hasła
 const handleLogin = async () => {
-    // Pobierz dane z formularza (przykład)
+    if (!auth) {
+        console.error('Firebase not initialized');
+        return;
+    }
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     try {
-        if (!email || !password){
-            throw new Error('Proszę wypełnić wszystkie pola.');
+        if (!email || !password) {
+            throw new Error('Please fill out all fields.');
         }
 
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const token = await userCredential.user.getIdToken();
 
-        // Wysyłanie tokena do backendu
         const response = await fetch('http://localhost:8080/verifyToken', {
             method: 'POST',
             headers: {
@@ -45,37 +49,36 @@ const handleLogin = async () => {
         });
 
         if (!response.ok) {
-            throw new Error('Błąd weryfikacji tokena na serwerze.');
+            throw new Error('Token verification failed on the server.');
         }
 
-        const data = await response.text();
-        $('#message').text('Zalogowano').css('color', 'green');
+        $('#message').text('Logged in successfully').css('color', 'green');
     } catch (error) {
-        console.error('Błąd podczas logowania:', error);
-        let errorMessage = 'Wystąpił nieznany błąd.';
+        console.error('Error during login:', error);
+        let errorMessage = 'Unknown error occurred.';
 
         if (error.code) {
             switch (error.code) {
                 case 'auth/user-not-found':
-                    errorMessage = 'Nie znaleziono użytkownika o podanym adresie email.';
+                    errorMessage = 'User not found for the given email.';
                     break;
                 case 'auth/wrong-password':
-                    errorMessage = 'Nieprawidłowe hasło.';
+                    errorMessage = 'Incorrect password.';
                     break;
                 case 'auth/invalid-email':
-                    errorMessage = 'Nieprawidłowy format adresu email.';
+                    errorMessage = 'Invalid email format.';
                     break;
                 case 'auth/user-disabled':
-                    errorMessage = 'Konto użytkownika zostało wyłączone.';
+                    errorMessage = 'The user account is disabled.';
                     break;
                 case 'auth/too-many-requests':
-                    errorMessage = 'Zbyt wiele nieudanych prób logowania. Spróbuj ponownie później.';
+                    errorMessage = 'Too many failed login attempts. Try again later.';
                     break;
                 case 'auth/invalid-credential':
-                    errorMessage = 'E-mail lub hasło są nieprawidłowe.';
+                    errorMessage = 'Invalid email or password.';
                     break;
                 default:
-                    errorMessage = `Błąd logowania: ${error.message}`;
+                    errorMessage = `Login error: ${error.message}`;
             }
         } else if (error.message) {
             errorMessage = error.message;
@@ -85,3 +88,6 @@ const handleLogin = async () => {
 };
 
 document.getElementById('loginButton').addEventListener('click', handleLogin);
+
+// Fetch the Firebase config and initialize Firebase on page load
+fetchFirebaseConfig();
