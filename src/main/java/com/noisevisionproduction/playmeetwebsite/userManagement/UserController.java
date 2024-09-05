@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController extends LogsPrint {
 
+
     @PostMapping("/verifyToken")
     public ResponseEntity<String> verifyToken(@RequestHeader("Authorization") String authHeader) {
         try {
