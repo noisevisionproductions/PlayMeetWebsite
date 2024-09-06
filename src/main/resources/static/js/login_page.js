@@ -1,6 +1,4 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js'
-
-// Add Firebase products that you want to use
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js'
 import { signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
 
@@ -14,7 +12,6 @@ const fetchFirebaseConfig = async () => {
             throw new Error('Failed to load Firebase config');
         }
         const firebaseConfig = await response.json();
-        // Initialize Firebase with config fetched from the backend
         app = initializeApp(firebaseConfig);
         auth = getAuth(app);
     } catch (error) {
@@ -51,8 +48,8 @@ const handleLogin = async () => {
         if (!response.ok) {
             throw new Error('Token verification failed on the server.');
         }
+        window.location.href = "/";
 
-        $('#message').text('Logged in successfully').css('color', 'green');
     } catch (error) {
         console.error('Error during login:', error);
         let errorMessage = 'Unknown error occurred.';
@@ -60,25 +57,25 @@ const handleLogin = async () => {
         if (error.code) {
             switch (error.code) {
                 case 'auth/user-not-found':
-                    errorMessage = 'User not found for the given email.';
+                    errorMessage = 'Użytkownik o podanym e-mail nie istnieje.';
                     break;
                 case 'auth/wrong-password':
-                    errorMessage = 'Incorrect password.';
+                    errorMessage = 'Nieprawidłowe hasło.';
                     break;
                 case 'auth/invalid-email':
-                    errorMessage = 'Invalid email format.';
+                    errorMessage = 'Nieprawidłowy format e-mail';
                     break;
                 case 'auth/user-disabled':
-                    errorMessage = 'The user account is disabled.';
+                    errorMessage = 'Konto użytkownika zostało zablokowane.';
                     break;
                 case 'auth/too-many-requests':
-                    errorMessage = 'Too many failed login attempts. Try again later.';
+                    errorMessage = 'Za dużo prób logownaia. Spróbuj ponownie później.';
                     break;
                 case 'auth/invalid-credential':
-                    errorMessage = 'Invalid email or password.';
+                    errorMessage = 'Nieprawidłowy e-mail lub hasło.';
                     break;
                 default:
-                    errorMessage = `Login error: ${error.message}`;
+                    errorMessage = `Błąd logowania: ${error.message}`;
             }
         } else if (error.message) {
             errorMessage = error.message;

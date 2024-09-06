@@ -7,6 +7,8 @@
 // Scripts
 // 
 // Dodaje nasłuchiwacz zdarzeń, który wykonuje funkcję po załadowaniu całego drzewa DOM strony
+
+
 window.addEventListener('DOMContentLoaded', event => {
     // Funkcja zmniejszająca pasek nawigacyjny
     var navbarShrink = function () {
@@ -55,4 +57,30 @@ window.addEventListener('DOMContentLoaded', event => {
         localStorage.setItem('userConsent', 'accepted');
         document.getElementById('cookieConsentContainer').style.display = 'none';
     };
+});
+
+const checkUserSession = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/user/session');
+        if (!response.ok){
+            throw new Error('Failed to fetch user session');
+        }
+
+        const sessionData = await response.json();
+        const accountLink = document.getElementById('accountLink');
+
+        if (sessionData.status == 'logged_in') {
+            accountLink.innerText = "Twoje konto";
+            accountLink.href = "/account";
+        } else {
+            accountLink.innerText = "Zaloguj się";
+            accountLink.href = "/login"
+        }
+    } catch (error) {
+        console.error('Error checking user session: ', error);
+    }
+};
+
+window.addEventListener('DOMContentLoaded', event => {
+    checkUserSession();
 });
