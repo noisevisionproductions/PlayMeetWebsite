@@ -36,7 +36,7 @@ const handleLogin = async () => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const token = await userCredential.user.getIdToken();
 
-        const response = await fetch('http://localhost:8080/verifyToken', {
+        const response = await fetch('http://localhost:8080/auth/verifyToken', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

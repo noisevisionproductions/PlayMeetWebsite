@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profil użytkownika</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="css/user_account.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <!-- User Info Section -->
+    <div class="profile-header">
+        <div class="avatar">
+            <img th:src="${user.avatar != null} ? ${user.avatar} : 'assets/post/sample_avatar.png'"
+                 alt="Avatar użytkownika" class="user-avatar" src="">
+        </div>
+        <div class="user-info">
+            <div class="header-actions">
+                <h2 class="nickname" th:text="${user.nickname}">UserNickname</h2>
+                <button type="button" class="logout-button" onclick="performLogout()">Wyloguj się</button>
+            </div>
+            <p class="real-name"><strong>Imię:</strong> <span
+                    th:text="${user.name != null} ?  ${user.name} : 'Nie podano'"></span></p>
+            <p class="age"><strong>Wiek:</strong> <span
+                    th:text="${user.age != null} ?  ${user.age} : 'Nie podano'"></span></p>
+            <p class="gender"><strong>Płeć:</strong> <span
+                    th:text="${user.gender != null} ?  ${user.gender} : 'Nie podano'"></span></p>
+            <p class="city"><strong>Miasto:</strong> <span
+                    th:text="${user.location != null} ?  ${user.location} : 'Nie podano'"></span></p>
+        </div>
+    </div>
+
+    <!-- About Me Section -->
+    <div class="about-me">
+        <h3>About Me</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula euismod odio, sit amet consequat ligula
+            posuere in.</p>
+    </div>
+
+    <!-- User Posts Section -->
+    <div class="user-posts">
+        <h3>User Posts</h3>
+        <div class="post">
+            <h4>Post Title 1</h4>
+            <p>Post content 1...</p>
+            <span class="post-date">Posted on: September 1, 2024</span>
+        </div>
+        <div class="post">
+            <h4>Post Title 2</h4>
+            <p>Post content 2...</p>
+            <span class="post-date">Posted on: August 29, 2024</span>
+        </div>
+        <div class="post">
+            <h4>Post Title 3</h4>
+            <p>Post content 3...</p>
+            <span class="post-date">Posted on: August 15, 2024</span>
+        </div>
+        <!-- Add more posts as necessary -->
+    </div>
+</div>
+<script src="js/user_account.js" defer></script>
+</body>
+</html>

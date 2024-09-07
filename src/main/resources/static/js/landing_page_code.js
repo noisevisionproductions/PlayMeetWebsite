@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 const checkUserSession = async () => {
     try {
-        const response = await fetch('http://localhost:8080/user/session');
+        const response = await fetch('http://localhost:8080/auth/user/session');
         if (!response.ok){
             throw new Error('Failed to fetch user session');
         }
@@ -71,8 +71,9 @@ const checkUserSession = async () => {
 
         if (sessionData.status == 'logged_in') {
             accountLink.innerText = "Twoje konto";
-            accountLink.href = "/account";
-        } else {
+            accountLink.href = "/user_account";
+        }
+        if (sessionData.status == 'logged_out'){
             accountLink.innerText = "Zaloguj się";
             accountLink.href = "/login"
         }
