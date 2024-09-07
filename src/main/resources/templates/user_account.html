@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
     <link rel="stylesheet" href="css/user_account.css">
+    <link href="css/individual_post_style.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -39,32 +40,14 @@
                     th:text="${user.location != null} ?  ${user.location} : 'Nie podano'"></span></p>
         </div>
     </div>
-
-    <!-- About Me Section -->
     <div class="about-me">
-        <h3>About Me</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula euismod odio, sit amet consequat ligula
-            posuere in.</p>
+        <h3>O mnie</h3>
+        <p th:text="${user.aboutMe != null} ?  ${user.aboutMe} : 'Nie podano'"></p>
     </div>
-
     <!-- User Posts Section -->
     <div class="user-posts">
-        <h3>User Posts</h3>
-        <div class="post">
-            <h4>Post Title 1</h4>
-            <p>Post content 1...</p>
-            <span class="post-date">Posted on: September 1, 2024</span>
-        </div>
-        <div class="post">
-            <h4>Post Title 2</h4>
-            <p>Post content 2...</p>
-            <span class="post-date">Posted on: August 29, 2024</span>
-        </div>
-        <div class="post">
-            <h4>Post Title 3</h4>
-            <p>Post content 3...</p>
-            <span class="post-date">Posted on: August 15, 2024</span>
-        </div>
+        <h3 class="post-header">Posty</h3>
+        <div th:each="post : ${posts}" th:insert="fragments/post_fragment :: post"></div>
         <!-- Add more posts as necessary -->
     </div>
 </div>

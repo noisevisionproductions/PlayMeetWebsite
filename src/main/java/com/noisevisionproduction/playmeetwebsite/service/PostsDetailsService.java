@@ -17,9 +17,7 @@ import java.util.stream.Collectors;
 public class PostsDetailsService extends LogsPrint {
 
     private final PostsService postsService;
-
     private final PostsRegistrationService postsRegistrationService;
-
     private final UserService userService;
 
     @Autowired
@@ -31,6 +29,17 @@ public class PostsDetailsService extends LogsPrint {
 
     public List<PostModel> getAllPosts() throws InterruptedException, ExecutionException {
         List<PostModel> posts = postsService.getPosts();
+
+        for (PostModel postModel : posts) {
+            postWithUserDetails(postModel);
+            registrationsOfThePosts(postModel);
+        }
+        return posts;
+    }
+
+    // New method to get posts created by a specific user
+    public List<PostModel> getUserPosts(String userId) throws InterruptedException, ExecutionException {
+        List<PostModel> posts = postsService.getPostsByUserId(userId);
 
         for (PostModel postModel : posts) {
             postWithUserDetails(postModel);

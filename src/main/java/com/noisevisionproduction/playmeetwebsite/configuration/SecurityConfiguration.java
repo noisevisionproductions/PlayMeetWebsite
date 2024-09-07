@@ -20,6 +20,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
                         .requestMatchers("/403", "/user_account/{userId}").permitAll()
                         .requestMatchers("/api/config/firebase", "/auth/verifyToken", "/auth/perform_login", "/auth/user/session", "/auth/perform_logout").permitAll()
+                        .requestMatchers("/cookies/accept-cookies", "/cookies/cookies-status").permitAll()
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form

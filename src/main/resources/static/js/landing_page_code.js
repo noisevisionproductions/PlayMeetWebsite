@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    // Polityka cookies
+    /*// Polityka cookies
     var consent = localStorage.getItem('userConsent');
     if (!consent) {
         document.getElementById('cookieConsentContainer').style.display = 'block';
@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', event => {
     document.getElementById('acceptCookieConsent').onclick = function () {
         localStorage.setItem('userConsent', 'accepted');
         document.getElementById('cookieConsentContainer').style.display = 'none';
-    };
+    };*/
 });
 
 const checkUserSession = async () => {
@@ -81,6 +81,36 @@ const checkUserSession = async () => {
         console.error('Error checking user session: ', error);
     }
 };
+
+fetch('/cookies/cookies-status')
+    .then(response => response.json())
+    .then(data => {
+    if (data.cookiePolicyAccepted){
+        document.getElementById('cookieConsentContainer').style.display = 'none';
+    }
+})
+    .catch(error => {
+    console.error('Error fetching cookie policy status:',  error);
+});
+
+document.getElementById("acceptCookieConsent").addEventListener("click", function(){
+    fetch('cookies/accept-cookies', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => {
+        if (response.ok) {
+            document.getElementById('cookieConsentContainer').style.display = 'none';
+        } else {
+            console.error('Error accepting cookie policy:', response.status);
+        }
+    })
+        .catch(error => {
+        console.error('Error:', error);
+    });
+});
 
 window.addEventListener('DOMContentLoaded', event => {
     checkUserSession();

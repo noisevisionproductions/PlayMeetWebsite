@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:fragment="post" class="post">
+    <div class="post-header">
+        <img th:src="${post.avatar != null} ? ${post.avatar} : 'assets/post/sample_avatar.png'"
+             alt="Avatar użytkownika" class="post-avatar" src="">
+        <div class="post-info">
+            <div class="post-cityName">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span th:text="${post.cityName}">Miasto</span>
+            </div>
+            <div class="post-sportType">
+                <i class="fa-solid fa-person-running"></i>
+                <span th:text="${post.sportType}">Sport</span>
+            </div>
+            <div class="post-skillLevel">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span th:text="${post.skillLevel}">Poziom Umiejętności</span>
+            </div>
+        </div>
+    </div>
+    <div class="post-footer">
+        <div class="post-additionalInfo"
+             th:text="${post.additionalInfo != null} ? ${post.additionalInfo} : 'Nie podano dodatkowych informacji'">
+            Dodatkowe informacje
+        </div>
+        <div class="post-peopleStatus">
+            <i class="fa-solid fa-users"></i>
+            <span th:text="${post.signedUpCount + '/' + post.howManyPeopleNeeded}">Liczba
+                zapisanych/Poszukiwanych osób</span>
+        </div>
+    </div>
+    <details class="post-more-info">
+        <summary class="post-more-info-summary">Więcej informacji (tylko dla zalogowanych)</summary>
+        <div class="post-more-info-content">
+            <div class="">Data: <span class="info-value" th:text="${post.dateTime}"></span></div>
+            <div class="">Godzina: <span class="info-value" th:text="${post.hourTime}"></span></div>
+            <div class="">Post ID: <span class="info-value" th:text="${post.postId}"></span></div>
+            <div>Zapisani:
+                <div th:if="${post.registrations != null && #lists.isEmpty(post.registrations)}">Brak zapisanych</div>
+                <div th:each="user : ${post.registrations}" th:if="${post.registrations != null}">
+                    <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" />
+                </div>
+            </div>
+        </div>
+    </details>
+</div>
+</html>

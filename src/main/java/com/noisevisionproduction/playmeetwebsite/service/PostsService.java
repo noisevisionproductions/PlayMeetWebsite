@@ -52,4 +52,20 @@ public class PostsService extends LogsPrint {
             return Collections.emptyList();
         }
     }
+
+    public List<PostModel> getPostsByUserId(String userId) {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection("PostCreating")
+                    .whereEqualTo("userId", userId)
+                    .get();
+
+            List<QueryDocumentSnapshot> documentSnapshots = future.get().getDocuments();
+            return documentSnapshots.stream()
+                    .map(document -> document.toObject(PostModel.class))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logError("Error fetching user's posts ", e);
+            return Collections.emptyList();
+        }
+    }
 }
