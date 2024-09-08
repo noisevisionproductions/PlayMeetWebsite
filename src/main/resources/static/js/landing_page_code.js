@@ -6,8 +6,14 @@
 //
 // Scripts
 // 
-// Dodaje nasłuchiwacz zdarzeń, który wykonuje funkcję po załadowaniu całego drzewa DOM strony
-
+window.onload = function() {
+    var images = document.querySelectorAll('.img-fluid');
+    images.forEach(function(img) {
+        img.addEventListener('click', function() {
+            this.classList.toggle('zoomed');
+        });
+    });
+};
 
 window.addEventListener('DOMContentLoaded', event => {
     // Funkcja zmniejszająca pasek nawigacyjny

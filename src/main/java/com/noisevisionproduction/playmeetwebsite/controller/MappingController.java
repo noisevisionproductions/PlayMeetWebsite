@@ -1,12 +1,15 @@
 package com.noisevisionproduction.playmeetwebsite.controller;
 
-import com.noisevisionproduction.playmeetwebsite.model.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MappingController {
+
+    @Autowired
+    private ApiController apiController;
 
     @GetMapping("/privacy_policy")
     public String privatePolicy() {
@@ -34,7 +37,10 @@ public class MappingController {
     }
 
     @GetMapping("/create-post")
-    public String postCreating() {
+    public String postCreating(Model model) {
+        apiController.getSports(model);
+        apiController.getCitiesInPoland(model);
+        apiController.getSkillLevelName(model);
         return "post_creating";
     }
 }

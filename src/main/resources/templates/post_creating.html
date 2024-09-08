@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,45 +23,71 @@
     <form action="#" method="POST">
         <!-- Title/Activity -->
         <div class="input-group">
-            <input type="text" id="activity" name="activity" placeholder="Hokej" required>
+            <label for="sports">Wybierz sport</label>
+            <select id="sports" name="activity" required>
+                <option value="">Wybierz sport</option>
+                <option th:each="sport : ${sports}" th:value="${sport}" th:text="${sport}"></option>
+            </select>
         </div>
 
-        <!-- City -->
         <div class="input-group">
-            <input type="text" id="city" name="city" placeholder="Cieszyn" required>
+            <label for="city">Wybierz miasto</label>
+            <select id="city" name="activity" required>
+                <option value="">Wybierz miasto</option>
+                <option th:each="cities : ${citiesInPoland}" th:value="${cities}" th:text="${cities}"></option>
+            </select>
         </div>
 
-        <!-- Skill Level -->
         <div class="input-group">
-            <input type="text" id="skill" name="skill" placeholder="Średnio-zaawansowany" required>
+            <label for="skillLevel">Wybierz poziom gry</label>
+            <select id="skillLevel" name="activity" required>
+                <option value="">Poziom gry</option>
+                <option th:each="skillLevels : ${skillLevelNames}" th:value="${skillLevels}"
+                        th:text="${skillLevels}"></option>
+            </select>
         </div>
 
-        <!-- Number of people -->
         <div class="input-group">
-            <input type="number" id="people" name="people" placeholder="Ilość potrzebnych osób" min="1" required>
+            <label for="people">Ilość potrzebnych osób</label><input type="number" id="people" name="people"
+                                                                     placeholder="Ilość potrzebnych osób" min="1"
+                                                                     max="99" required>
         </div>
 
-        <!-- Date and Time Checkboxes -->
+        <div class="date">
+            <label for="date">Wybierz datę</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+
         <div class="checkbox-group">
-            <label for="date_agreement">
-                <input type="checkbox" id="date_agreement" name="date_agreement"> Data do uzgodnienia
-            </label>
-            <label for="time_agreement">
-                <input type="checkbox" id="time_agreement" name="time_agreement"> Godzina do uzgodnienia
+            <label for="noDate">
+                <input type="checkbox" id="noDate" onclick="toggleDate()"> Data do uzgodnienia
             </label>
         </div>
 
-        <!-- Additional Information -->
+        <div class="hour">
+            <label for="time">Wybierz godzinę</label>
+            <input type="time" id="time" name="time" required>
+        </div>
+
+        <div class="checkbox-group">
+            <label for="noHour">
+                <input type="checkbox" id="noHour" onclick="toggleHour()"> Godzina do uzgodnienia
+            </label>
+        </div>
+
         <div class="input-group">
-            <textarea id="additional_info" name="additional_info"
-                      placeholder="Dodatkowe informacje (opcjonalne)"></textarea>
+            <label for="date">Dodatkowe informacje (opcjonalne)
+                <textarea type="text" id="additional_info" name="additional_info"
+                          placeholder="Dodatkowe informacje (opcjonalne)">
+                </textarea>
+            </label>
         </div>
 
-        <!-- Submit Button -->
         <div class="button-group">
             <button type="submit" class="submit-btn">Utwórz post</button>
         </div>
     </form>
 </div>
+<script src="js/post_creating.js"></script>
 </body>
 </html>
