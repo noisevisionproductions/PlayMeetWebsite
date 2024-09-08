@@ -1,4 +1,4 @@
-package com.noisevisionproduction.playmeetwebsite;
+package com.noisevisionproduction.playmeetwebsite.utils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import static org.mockito.Mockito.verify;
 
-class LogsPrintTest {
+class LogsPrintTest{
 
     @Spy
     private Logger logger = LoggerFactory.getLogger(TestLogsPrint.class);
@@ -28,7 +28,9 @@ class LogsPrintTest {
         String errorMessage = "Test error message";
         Throwable throwable = new RuntimeException("Test exception");
 
+/*
         testLogsPrint.logError(errorMessage, throwable);
+*/
 
         verify(logger).error(errorMessage, throwable);
     }

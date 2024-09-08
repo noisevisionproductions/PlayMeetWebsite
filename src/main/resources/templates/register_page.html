@@ -13,21 +13,46 @@
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="/css/register_page.css">
 </head>
 <body>
 <div class="container">
     <h2>Rejestracja</h2>
-    <form action="/register" method="post">
-        <label for="email">Email</label>
+    <form action="/auth/register" method="post" id="registrationForm">
+        <label for="email">E-mail</label>
         <input type="email" id="email" name="email" required>
 
-        <label for="password">Password</label>
+        <label for="nickName">Nazwa użytkownika</label>
+        <input type="text" id="nickName" name="nickName" required>
+
+        <label for="password">Hasło (min. 8 znaków)</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit">Sign Up</button>
+        <label for="confirmPassword">Potwierdź hasło</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+        <label for="location">Skąd jesteś</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="age">Wiek</label>
+        <select id="age" name="age" required>
+            <option value="">Wybierz swój wiek</option>
+        </select>
+
+        <label for="gender">Płeć</label>
+        <select id="gender" name="gender" required>
+            <option value="">Wybierz swoją płeć</option>
+            <option value="Male">Mężczyna</option>
+            <option value="Female">Kobieta</option>
+        </select>
+
+        <button type="submit">Stwórz konto</button>
+
     </form>
-    <a href="/login">Zaloguj się</a>
+
+    <p id="errorMessage" class="errorMessage"></p>
+    <a href="/login">Masz już konto? Zaloguj się</a>
 </div>
+<script type="module" src="js/register_page.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 95%;
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* Style form */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"], input[type="number"], textarea {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+}
+
+textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* Checkbox group */
+.checkbox-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1rem;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+button {
+    padding: 1rem;
+    font-size: 1.1rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; /* Centered the button */
+    margin-top: 1.5rem;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 1.5rem;
+    }
+}

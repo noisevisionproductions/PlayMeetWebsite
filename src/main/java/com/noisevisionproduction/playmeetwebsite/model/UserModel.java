@@ -15,6 +15,14 @@ public class UserModel {
     public UserModel() {
     }
 
+    public UserModel(String userId, String nickName, String age, String gender, String location) {
+        this.userId = userId;
+        this.nickname = nickName;
+        this.age = age;
+        this.gender = gender;
+        this.location = location;
+    }
+
     public String getAvatar() {
         return avatar;
     }

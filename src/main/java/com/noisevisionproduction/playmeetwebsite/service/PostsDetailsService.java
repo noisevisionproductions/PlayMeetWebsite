@@ -1,6 +1,6 @@
 package com.noisevisionproduction.playmeetwebsite.service;
 
-import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;

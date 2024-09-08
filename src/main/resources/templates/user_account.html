@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profil użytkownika</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"
             crossorigin="anonymous"></script>
@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
-    <link rel="stylesheet" href="css/user_account.css">
-    <link href="css/individual_post_style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/user_account.css">
+    <link href="/css/individual_post_style.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -22,12 +22,13 @@
     <!-- User Info Section -->
     <div class="profile-header">
         <div class="avatar">
-            <img th:src="${user.avatar != null} ? ${user.avatar} : 'assets/post/sample_avatar.png'"
+            <img th:src="${user.avatar != null} ? ${user.avatar} : '/assets/post/sample_avatar.png'"
                  alt="Avatar użytkownika" class="user-avatar" src="">
         </div>
         <div class="user-info">
             <div class="header-actions">
-                <h2 class="nickname" th:text="${user.nickname}">UserNickname</h2>
+                <h2 class="nickname"
+                    th:text="${user.nickname != null} ? ${user.nickname} : 'Profil nie został uzupełniony.'"></h2>
                 <button type="button" class="logout-button" onclick="performLogout()">Wyloguj się</button>
             </div>
             <p class="real-name"><strong>Imię:</strong> <span
@@ -44,13 +45,16 @@
         <h3>O mnie</h3>
         <p th:text="${user.aboutMe != null} ?  ${user.aboutMe} : 'Nie podano'"></p>
     </div>
-    <!-- User Posts Section -->
     <div class="user-posts">
         <h3 class="post-header">Posty</h3>
-        <div th:each="post : ${posts}" th:insert="fragments/post_fragment :: post"></div>
-        <!-- Add more posts as necessary -->
+        <div th:if="${posts != null and posts.size() > 0}">
+            <div th:each="post : ${posts}" th:insert="fragments/post_fragment :: post"></div>
+        </div>
+        <div th:if="${posts == null or posts.size() == 0}">
+            <p class="no-posts">Brak postów użytkownika.</p>
+        </div>
     </div>
 </div>
-<script src="js/user_account.js" defer></script>
+<script src="/js/user_account.js" defer></script>
 </body>
 </html>

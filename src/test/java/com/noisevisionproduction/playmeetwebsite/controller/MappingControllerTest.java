@@ -47,14 +47,6 @@ class MappingControllerTest {
                 .andExpect(view().name("403"));
     }
 
-
-    @Test
-    public void testRegisterMapping() throws Exception {
-        mockMvc.perform(get("/register"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("register_page"));
-    }
-
     @Test
     public void testLoginMapping() throws Exception {
         mockMvc.perform(get("/login"))

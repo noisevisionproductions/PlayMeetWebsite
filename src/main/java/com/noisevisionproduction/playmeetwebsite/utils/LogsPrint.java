@@ -1,4 +1,4 @@
-package com.noisevisionproduction.playmeetwebsite;
+package com.noisevisionproduction.playmeetwebsite.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

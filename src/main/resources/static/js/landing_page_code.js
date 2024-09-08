@@ -46,17 +46,6 @@ window.addEventListener('DOMContentLoaded', event => {
             }
         });
     });
-
-    /*// Polityka cookies
-    var consent = localStorage.getItem('userConsent');
-    if (!consent) {
-        document.getElementById('cookieConsentContainer').style.display = 'block';
-    }
-
-    document.getElementById('acceptCookieConsent').onclick = function () {
-        localStorage.setItem('userConsent', 'accepted');
-        document.getElementById('cookieConsentContainer').style.display = 'none';
-    };*/
 });
 
 const checkUserSession = async () => {
@@ -69,13 +58,12 @@ const checkUserSession = async () => {
         const sessionData = await response.json();
         const accountLink = document.getElementById('accountLink');
 
-        if (sessionData.status == 'logged_in') {
+        if (sessionData.status == 'logged_in' && sessionData.user) {
             accountLink.innerText = "Twoje konto";
-            accountLink.href = "/user_account";
-        }
-        if (sessionData.status == 'logged_out'){
+            accountLink.href = `/user_account/${sessionData.user}`;
+        } else if (sessionData.status === 'logged_out') {
             accountLink.innerText = "Zaloguj się";
-            accountLink.href = "/login"
+            accountLink.href = "/login";
         }
     } catch (error) {
         console.error('Error checking user session: ', error);

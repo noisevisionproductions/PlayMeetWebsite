@@ -20,6 +20,15 @@ public class EncryptionService {
         this.key = keyLoader.getKey();
     }
 
+    public String encrypt(String valueToEnc) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKeySpec keySpec = new SecretKeySpec(Arrays.copyOf(this.key, 16), "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(Arrays.copyOf(this.key, cipher.getBlockSize()));
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+        byte[] cipherText = cipher.doFinal(valueToEnc.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(cipherText);
+    }
+
     public String decrypt(String encryptedValue) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(this.key, 16), "AES");

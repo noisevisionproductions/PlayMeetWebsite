@@ -89,7 +89,7 @@ body {
 }
 
 .about-me p {
-    font-size: 16px;
+    font-size: 18px;
     color: #666;
 }
 
@@ -100,7 +100,7 @@ body {
 .user-posts h3 {
     font-size: 20px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-bottom: 2px solid #0b84f3;
     display: inline-block;
 }
@@ -108,4 +108,10 @@ body {
 .post-header {
     display: flex;
     align-items: center;
+}
+
+.no-posts {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #666;
 }

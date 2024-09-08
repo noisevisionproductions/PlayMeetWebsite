@@ -4,7 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

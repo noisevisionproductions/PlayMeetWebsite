@@ -19,6 +19,13 @@ public class PostModel {
     private int signedUpCount = 0;
     private List<UserModel> registrations;
 
+    public PostModel() {
+    }
+
+    public PostModel(String postId) {
+        this.postId = postId;
+    }
+
     public int getSignedUpCount() {
         return signedUpCount;
     }

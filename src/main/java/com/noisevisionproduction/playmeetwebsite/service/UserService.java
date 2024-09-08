@@ -1,7 +1,7 @@
 package com.noisevisionproduction.playmeetwebsite.service;
 
 import com.google.firebase.database.*;
-import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +34,10 @@ public class UserService extends LogsPrint {
             }
         });
         return completableFuture;
+    }
+
+    public void saveUser(UserModel userModel) {
+        DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userModel.getUserId());
+        userReference.setValueAsync(userModel);
     }
 }

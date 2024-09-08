@@ -28,13 +28,13 @@ public class MappingController {
         return "403";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register_page";
-    }
-
     @GetMapping("/login")
     public String login() {
         return "login_page";
+    }
+
+    @GetMapping("/create-post")
+    public String postCreating() {
+        return "post_creating";
     }
 }

@@ -1,6 +1,8 @@
 package com.noisevisionproduction.playmeetwebsite.service.dataEncryption;
 
-import com.noisevisionproduction.playmeetwebsite.LogsPrint;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,17 @@ import java.util.Properties;
 public class KeyLoaderForEncryptionService extends LogsPrint {
 
     private byte[] key;
+    private final ClassPathResource classPathResource;
 
-    public KeyLoaderForEncryptionService() {
+    @Autowired
+    public KeyLoaderForEncryptionService(@Value("${encryption.keys:keys.properties}") String filePath) {
+        this.classPathResource = new ClassPathResource(filePath);
         loadKeyFromProperties();
     }
 
-    private void loadKeyFromProperties() {
+    public void loadKeyFromProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = new ClassPathResource("keys.properties").getInputStream()) {
+        try (InputStream inputStream = classPathResource.getInputStream()) {
             properties.load(inputStream);
             String keyString = properties.getProperty("encryption_key");
             this.key = keyString.getBytes(StandardCharsets.UTF_8);
@@ -32,3 +37,4 @@ public class KeyLoaderForEncryptionService extends LogsPrint {
         return this.key;
     }
 }
+
