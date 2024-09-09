@@ -39,12 +39,12 @@ import java.util.concurrent.ExecutionException;
  */
 @Controller
 @RequestMapping("/posts")
-public class PostsController extends LogsPrint {
+public class PostsDisplayController extends LogsPrint {
 
     private final PostsDetailsService postsDetailsService;
 
     @Autowired
-    public PostsController(PostsDetailsService postsDetailsService) {
+    public PostsDisplayController(PostsDetailsService postsDetailsService) {
         this.postsDetailsService = postsDetailsService;
     }
 

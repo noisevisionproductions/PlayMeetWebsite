@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class PostsControllerTest {
+class PostsDisplayControllerTest {
 
     @Mock
     private PostsDetailsService postsDetailsServiceMock;
@@ -25,7 +25,7 @@ class PostsControllerTest {
     private Model modelMock;
 
     @InjectMocks
-    private PostsController postsController;
+    private PostsDisplayController postsDisplayController;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ class PostsControllerTest {
 
         when(postsDetailsServiceMock.getAllPosts()).thenReturn(posts);
 
-        String viewName = postsController.showPostPage(modelMock);
+        String viewName = postsDisplayController.showPostPage(modelMock);
 
         assertEquals("posts", viewName);
         verify(modelMock, times(1)).addAttribute("posts", posts);
@@ -51,7 +51,7 @@ class PostsControllerTest {
     public void testShowPostPageError() throws ExecutionException, InterruptedException {
         when(postsDetailsServiceMock.getAllPosts()).thenThrow(new ExecutionException(new RuntimeException("Error")));
 
-        String viewName = postsController.showPostPage(modelMock);
+        String viewName = postsDisplayController.showPostPage(modelMock);
 
         assertEquals("error", viewName);
         verify(modelMock, times(1)).addAttribute("error", "Error fetching posts");

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,6 @@ public class ApiController {
 
     public void getSkillLevelName(Model model) {
         Map<String, String> skillLevel = apiService.getSkillLevel();
-        List<String> skillLevelNames = new ArrayList<>(skillLevel.values());
-        model.addAttribute("skillLevelNames", skillLevelNames);
+        model.addAttribute("skillLevelNames", skillLevel);
     }
 }

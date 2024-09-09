@@ -14,9 +14,10 @@
 
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet"/>
+    <!-- Import Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-...hash..." crossorigin="anonymous">
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/landing_page.css" rel="stylesheet"/>
 </head>
@@ -60,11 +61,15 @@
                 <h1 class="mx-auto my-0 text-uppercase">Znajdź graczy do swoich
                     ulubionych aktywności sportowych - gdziekolwiek jesteś!
                 </h1>
-                <a class="btn btn-primary" href="/posts">Gry w Twojej okolicy</a>
+                <div class="d-flex justify-content-center gap-4 flex-wrap mt-3">
+                    <a class="btn btn-primary" href="/posts">Przeglądaj gry</a>
+                    <a class="btn btn-primary createPost" href="/create-post">Stwórz ogłoszenie</a>
+                </div>
             </div>
         </div>
     </div>
 </header>
+
 
 <!--Question fragment-->
 <div class="question-container" id="questions">
@@ -242,6 +247,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="js/landing_page_code.js"></script>
-<script src="js/image_zoom.js"></script>
 </body>
 </html>

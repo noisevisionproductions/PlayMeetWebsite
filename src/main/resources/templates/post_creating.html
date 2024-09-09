@@ -20,11 +20,11 @@
     <h2>Tworzenie postu</h2>
 
     <!-- Form -->
-    <form action="#" method="POST">
+    <form action="/api/posts/create" method="POST">
         <!-- Title/Activity -->
         <div class="input-group">
             <label for="sports">Wybierz sport</label>
-            <select id="sports" name="activity" required>
+            <select id="sports" name="sportName" required>
                 <option value="">Wybierz sport</option>
                 <option th:each="sport : ${sports}" th:value="${sport}" th:text="${sport}"></option>
             </select>
@@ -32,7 +32,7 @@
 
         <div class="input-group">
             <label for="city">Wybierz miasto</label>
-            <select id="city" name="activity" required>
+            <select id="city" name="cityName" required>
                 <option value="">Wybierz miasto</option>
                 <option th:each="cities : ${citiesInPoland}" th:value="${cities}" th:text="${cities}"></option>
             </select>
@@ -40,44 +40,46 @@
 
         <div class="input-group">
             <label for="skillLevel">Wybierz poziom gry</label>
-            <select id="skillLevel" name="activity" required>
+            <select id="skillLevel" name="skillLevel" required>
                 <option value="">Poziom gry</option>
-                <option th:each="skillLevels : ${skillLevelNames}" th:value="${skillLevels}"
-                        th:text="${skillLevels}"></option>
+                <option th:each="entry : ${skillLevelNames}"
+                        th:value="${entry.key}"
+                        th:text="${entry.value}">
+                </option>
             </select>
         </div>
 
         <div class="input-group">
-            <label for="people">Ilość potrzebnych osób</label><input type="number" id="people" name="people"
+            <label for="people">Ilość potrzebnych osób</label><input type="number" id="people" name="numberOfPeople"
                                                                      placeholder="Ilość potrzebnych osób" min="1"
                                                                      max="99" required>
         </div>
 
         <div class="date">
             <label for="date">Wybierz datę</label>
-            <input type="date" id="date" name="date" required>
+            <input type="date" id="date" name="dateTime" required>
         </div>
 
         <div class="checkbox-group">
             <label for="noDate">
-                <input type="checkbox" id="noDate" onclick="toggleDate()"> Data do uzgodnienia
+                <input type="checkbox" id="noDate" name="noDateTime" onclick="toggleDate()"> Data do uzgodnienia
             </label>
         </div>
 
         <div class="hour">
             <label for="time">Wybierz godzinę</label>
-            <input type="time" id="time" name="time" required>
+            <input type="time" id="time" name="hourTime" required>
         </div>
 
         <div class="checkbox-group">
             <label for="noHour">
-                <input type="checkbox" id="noHour" onclick="toggleHour()"> Godzina do uzgodnienia
+                <input type="checkbox" id="noHour" name="noHourTime" onclick="toggleHour()"> Godzina do uzgodnienia
             </label>
         </div>
 
-        <div class="input-group">
-            <label for="date">Dodatkowe informacje (opcjonalne)
-                <textarea type="text" id="additional_info" name="additional_info"
+        <div class="additional-info">
+            <label for="additional-info">Dodatkowe informacje (opcjonalne)
+                <textarea type="text" id="additional-info" name="additionalInfo"
                           placeholder="Dodatkowe informacje (opcjonalne)">
                 </textarea>
             </label>

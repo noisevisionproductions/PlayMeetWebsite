@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MappingController {
 
+    private final ApiController apiController;
+
     @Autowired
-    private ApiController apiController;
+    public MappingController(ApiController apiController) {
+        this.apiController = apiController;
+    }
 
     @GetMapping("/privacy_policy")
     public String privatePolicy() {

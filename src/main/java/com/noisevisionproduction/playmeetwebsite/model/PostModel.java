@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PostModel {
     private String postId;
-    private Boolean createdByUser = false;
+    private Boolean createdByUser = true;
     private Boolean isActivityFull = false;
     private String userId;
     private String avatar;
