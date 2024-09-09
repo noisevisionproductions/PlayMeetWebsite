@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
                         .requestMatchers("/403", "/user_account/{userId}").permitAll()
                         .requestMatchers("/api/config/firebase", "/api/posts").permitAll()
-                        .requestMatchers("/auth/verifyToken", "/auth/perform_login", "/auth/user/session", "/auth/perform_logout").permitAll()
+                        .requestMatchers("/auth/verifyToken", "/auth/perform_login", "/auth/user/session", "/auth/perform_logout", "/fear-greed-index").permitAll()
                         .requestMatchers("/cookies/accept-cookies", "/cookies/cookies-status").permitAll()
                         .requestMatchers("/create-post", "/api/posts/create").authenticated()
                         .anyRequest().authenticated())
@@ -39,7 +39,6 @@ public class SecurityConfiguration {
                         .permitAll())
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/403"));
-
         return httpSecurity.build();
     }
 }

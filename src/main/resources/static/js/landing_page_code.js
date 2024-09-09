@@ -5,8 +5,18 @@
 */
 //
 // Scripts
-// 
+//
+
 window.onload = function() {
+    // Check for the postId query parameter and show the popup
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+
+    if (postId) {
+        showPopup("Post utworzony! Jego ID to: " + postId);
+    }
+
+    // Zoom functionality for images
     var images = document.querySelectorAll('.img-fluid');
     images.forEach(function(img) {
         img.addEventListener('click', function() {

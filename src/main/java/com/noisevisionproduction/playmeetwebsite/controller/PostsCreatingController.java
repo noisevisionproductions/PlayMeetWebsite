@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/api/posts")
 public class PostsCreatingController {
@@ -25,10 +27,9 @@ public class PostsCreatingController {
     @PostMapping("/create")
     public ResponseEntity<String> createPost(@ModelAttribute PostRequest postRequest, HttpServletRequest httpServletRequest) {
         String userId = cookieService.getLoginStatusCookie(httpServletRequest);
-        if (userId == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Użytkownik nie zalogowany");
-        }
         String postId = postCreatingService.createPost(postRequest, userId);
-        return ResponseEntity.ok("Post utworzony" + postId);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("/?postId=" + postId))
+                .build();
     }
 }

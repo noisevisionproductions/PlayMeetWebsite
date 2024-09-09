@@ -41,6 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     implementation("javax.persistence:javax.persistence-api:2.2")
+    implementation("org.json:json:20240303")
     // Firebase dependencies
     implementation("com.google.firebase:firebase-admin:9.2.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +23,12 @@
         <button id="loginButton" type="button">Sign In</button>
     </form>
     <div id="message"></div>
+</div>
+<div th:fragment="fearGreedFragment" class="fearGreedIndex">
+    <div th:if="${fearGreedIndex != null}">
+        <h3>Crypto Fear & Greed Index</h3>
+        <p th:text="${fearGreedIndex}"></p>
+    </div>
 </div>
 <script type="module" src="js/login_page.js" defer></script>
 </body>

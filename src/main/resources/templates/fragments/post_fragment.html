@@ -39,10 +39,44 @@
             <div>Zapisani:
                 <div th:if="${post.registrations != null && #lists.isEmpty(post.registrations)}">Brak zapisanych</div>
                 <div th:each="user : ${post.registrations}" th:if="${post.registrations != null}">
-                    <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" />
+                    <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
                 </div>
+            </div>
+
+            <div>
+                <form action="/register-for-post" method="POST">
+                    <input type="hidden" name="postId" th:value="${post.postId}"/>
+                    <button type="submit" class="btn btn-primary mt-3">Zapisz się</button>
+                </form>
             </div>
         </div>
     </details>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function checkUserSession() {
+                fetch('/auth/user/session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                    document.querySelectorAll('.post-more-info').forEach(details => {
+                        if (data.status === 'logged_out') {
+                            details.addEventListener('click', function(event) {
+                                event.preventDefault();  // Prevents the details from opening
+                            });
+                            details.querySelector('.post-more-info-summary').textContent = 'Więcej informacji (tylko dla zalogowanych)';
+                        } else if (data.status === 'logged_in') {
+                            details.querySelector('.post-more-info-summary').textContent = 'Więcej informacji';
+                        }
+                    });
+                })
+                    .catch(error => console.error('Error checking session:', error));
+            }
+            checkUserSession();
+        })
+    </script>
 </div>
 </html>
