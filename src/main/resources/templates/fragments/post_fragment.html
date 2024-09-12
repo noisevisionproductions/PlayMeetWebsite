@@ -42,13 +42,13 @@
                     <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
                 </div>
             </div>
-
-            <div>
-                <form action="/register-for-post" method="POST">
-                    <input type="hidden" name="postId" th:value="${post.postId}"/>
-                    <button type="submit" class="btn btn-primary mt-3">Zapisz się</button>
-                </form>
-            </div>
+        </div>
+        <div>
+            <form class="registerForm" data-post-id="${post.postId}">
+                <input type="hidden" name="postId" th:value="${post.postId}"/>
+                <button type="button" class="signUp mt-3" onclick="registerForPost(this)">Zapisz się</button>
+                <div class="registerMessage"></div>
+            </form>
         </div>
     </details>
     <script>
@@ -65,7 +65,7 @@
                     document.querySelectorAll('.post-more-info').forEach(details => {
                         if (data.status === 'logged_out') {
                             details.addEventListener('click', function(event) {
-                                event.preventDefault();  // Prevents the details from opening
+                                event.preventDefault();
                             });
                             details.querySelector('.post-more-info-summary').textContent = 'Więcej informacji (tylko dla zalogowanych)';
                         } else if (data.status === 'logged_in') {
@@ -77,6 +77,38 @@
             }
             checkUserSession();
         })
+        function registerForPost(button) {
+            const form = button.closest(".registerForm");
+            const postId = form.querySelector("input[name='postId']").value;
+            const messageDiv = form.querySelector(".registerMessage");
+
+            fetch('/api/posts/register-for-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ postId: postId }) // Sending postId in the body as JSON
+            })
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Attempt to parse as JSON
+            })
+                .then(data => {
+                if (data.success) {
+                    messageDiv.style.color = "green";
+                } else {
+                    messageDiv.style.color = "red";
+                }
+                messageDiv.textContent = data.message;
+            })
+                .catch(error => {
+                messageDiv.style.color = "red";
+                messageDiv.textContent = "Błąd. Spróbuj ponownie.";
+                console.error('Error:', error);
+            });
+        }
     </script>
 </div>
 </html>

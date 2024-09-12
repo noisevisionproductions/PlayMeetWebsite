@@ -18,7 +18,15 @@ body {
     padding: 2rem;
     background-color: #fff;
     border-radius: 8px;
+    text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
 }
 
 h2 {
@@ -74,9 +82,74 @@ a:hover {
     font-size: 20px;
 }
 
+.info-section {
+    text-align: center;
+    margin: 10px;
+}
+
+.app-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.app-link:hover {
+    background-color: #0056b3;
+}
+
+.menu-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.menu-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.menu-button:hover {
+    background-color: #e2e6ea;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 100%;
         padding: 1rem;
     }
 }
+
+.test-account-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.test-account-info h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.test-account-info p {
+    font-size: 1.2em;
+    margin: 5px 0;
+    color: #666;
+}
+
+.test-account-info strong {
+    color: #000;
+}
+

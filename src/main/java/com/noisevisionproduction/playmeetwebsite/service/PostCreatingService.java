@@ -35,7 +35,13 @@ public class PostCreatingService extends LogsPrint {
         }
 
         postModel.setSkillLevel(postRequest.getSkillLevel());
-        postModel.setAdditionalInfo(postRequest.getAdditionalInfo());
+
+        if (postRequest.getAdditionalInfo().isEmpty()) {
+            postModel.setAdditionalInfo("Nie podano dodatkowych informacji.");
+        } else {
+            postModel.setAdditionalInfo(postRequest.getAdditionalInfo());
+        }
+
         postModel.setUserId(userId);
 
         try {

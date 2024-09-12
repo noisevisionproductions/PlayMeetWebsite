@@ -1,26 +1,30 @@
 package com.noisevisionproduction.playmeetwebsite.service;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
+import com.google.firebase.database.*;
+import com.google.firebase.database.Transaction;
+import com.noisevisionproduction.playmeetwebsite.model.RegistrationModel;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.cloud.Timestamp;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class PostsRegistrationService extends LogsPrint {
 
+    private final PostsService postsService;
     private final Firestore firestore;
+    private final FirebaseDatabase firebaseDatabase;
 
     @Autowired
-    public PostsRegistrationService(Firestore firestore) {
+    public PostsRegistrationService(PostsService postsService, Firestore firestore, FirebaseDatabase firebaseDatabase) {
+        this.postsService = postsService;
         this.firestore = firestore;
+        this.firebaseDatabase = firebaseDatabase;
     }
 
     public List<Map<String, Object>> getRegistrationsForPost(String postId) {
@@ -37,6 +41,72 @@ public class PostsRegistrationService extends LogsPrint {
         } catch (Exception e) {
             logError("Error fetching registrations for post ID: " + postId, e);
             return Collections.emptyList();
+        }
+    }
+
+    public boolean isUserRegisteredForPost(String postId, String userId) {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
+                    .whereEqualTo("postId", postId)
+                    .whereEqualTo("userId", userId)
+                    .get();
+            return !future.get().isEmpty();
+        } catch (Exception e) {
+            logError("Error checking if user is registered for post: " + postId, e);
+            return false;
+        }
+    }
+
+    public int getRegisteredPostCountForUser(String userId) {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
+                    .whereEqualTo("userId", userId)
+                    .get();
+            return future.get().size();
+        } catch (Exception e) {
+            logError("Error fetching registration count for user: " + userId, e);
+            return 0;
+        }
+    }
+
+    public void incrementUserPostCount(String userId) {
+        DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userId);
+        userReference.child("joinedPostsCount").runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                Integer userCount = currentData.getValue(Integer.class);
+
+                if (userCount == null) {
+                    userCount = 0;
+                }
+                currentData.setValue(userCount + 1);
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError error, boolean committed, DataSnapshot currentData) {
+                if (error != null) {
+                    logError("Error incrementing post count for user: " + userId, error.toException());
+                } else if (committed) {
+                    logDebug("Successfully incremented post count. - " + userId);
+                }
+            }
+        });
+    }
+
+    public boolean registerUserForPost(String postId, String userId) {
+        try {
+            RegistrationModel registrationModel = new RegistrationModel();
+            registrationModel.setPostId(postId);
+            registrationModel.setUserId(userId);
+            registrationModel.setRegistrationDate(Timestamp.now());
+            firestore.collection("registrations").add(registrationModel);
+            incrementUserPostCount(userId);
+            postsService.incrementSignedUpCount(postId, true);
+            return true;
+        } catch (Exception e) {
+            logError("Error registering user for post: " + postId, e);
+            return false;
         }
     }
 }

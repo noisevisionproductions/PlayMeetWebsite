@@ -9,27 +9,49 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
     <link rel="stylesheet" href="/css/login_page.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
     <h2>Logowanie</h2>
     <form id="loginForm" method="POST">
-        <label for="email">Username</label>
+        <label for="email">E-mail</label>
         <input type="email" id="email" name="email" required>
 
-        <label for="password">Password</label>
+        <label for="password">Hasło</label>
         <input type="password" id="password" name="password" required>
 
-        <button id="loginButton" type="button">Sign In</button>
+        <button id="loginButton" type="button">Zaloguj się</button>
     </form>
     <div id="message"></div>
 </div>
+
+<div class="info-section">
+    <h3>Informacja</h3>
+    <p>Obecnie możliwe jest założenie nowego konta wyłącznie przez aplikację PlayMeet. W aplikacji dostępne są również
+        dodatkowe funkcje, m. in. chat, zarządzanie profilem oraz postami.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.noisevisionproductions.playmeet" class="app-link"
+       target="_blank">Pobierz aplikację PlayMeet</a>
+</div>
+
+<div class="menu-section">
+    <a href="/" class="menu-button">Wróć do strony głównej</a>
+</div>
+
+<div class="test-account-info">
+    <h3>Chcesz przetestować aplikację?</h3>
+    <p>Możesz zalogować się na konto testowe, aby zapoznać się z funkcjami aplikacji.</p>
+    <p><strong>E-mail:</strong> noisevisionproductions@gmail.com</p>
+    <p><strong>Hasło:</strong> test1234</p>
+</div>
+
 <div th:fragment="fearGreedFragment" class="fearGreedIndex">
     <div th:if="${fearGreedIndex != null}">
         <h3>Crypto Fear & Greed Index</h3>
         <p th:text="${fearGreedIndex}"></p>
     </div>
 </div>
+
 <script type="module" src="js/login_page.js" defer></script>
 </body>
 </html>

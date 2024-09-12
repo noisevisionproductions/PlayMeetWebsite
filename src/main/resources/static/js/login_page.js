@@ -86,5 +86,4 @@ const handleLogin = async () => {
 
 document.getElementById('loginButton').addEventListener('click', handleLogin);
 
-// Fetch the Firebase config and initialize Firebase on page load
 fetchFirebaseConfig();

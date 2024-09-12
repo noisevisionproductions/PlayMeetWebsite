@@ -1,10 +1,9 @@
 .post {
     width: 95%;
     max-width: 800px;
-    max-height: 600px;
     background: #fff;
     padding: 20px;
-    margin: 10px 0;
+    margin: 20px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -12,9 +11,12 @@
     transition: transform 0.2s;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    justify-content: space-between;
+    min-height: 300px;
+    overflow: visible;
     border-left: 5px solid #0b84f3;
 }
+
 
 .post:hover {
     transform: scale(1.02);
@@ -98,6 +100,9 @@
     text-align: center;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
+    color: #007BFF;
+    margin-bottom: 10px;
 }
 
 .post-more-info-content {
@@ -110,9 +115,13 @@
     font-size: 20px;
     grid-template-columns: max-content auto;
     gap: 10px 20px;
-    max-height: 0;
-    overflow: hidden;
+    max-height: none;
+    overflow: visible;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
+
 
 .post-more-info-content > div {
     display: contents;
@@ -129,6 +138,40 @@
 
 .info-value {
     font-weight: bold;
+}
+
+.signUp {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    align-self: center;
+    text-align: center;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    margin: 0 auto;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 100%;
+}
+
+.registerMessage {
+    color: red;
+    margin-top: 10px;
 }
 
 h1,

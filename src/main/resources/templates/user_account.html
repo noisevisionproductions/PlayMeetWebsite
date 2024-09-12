@@ -48,7 +48,7 @@
     <div class="user-posts">
         <h3 class="post-header">Posty</h3>
         <div th:if="${posts != null and posts.size() > 0}">
-            <div th:each="post : ${posts}" th:insert="fragments/post_fragment :: post"></div>
+            <div th:each="post : ${posts}" th:insert="~{fragments/post_fragment :: post}"></div>
         </div>
         <div th:if="${posts == null or posts.size() == 0}">
             <p class="no-posts">Brak postów użytkownika.</p>

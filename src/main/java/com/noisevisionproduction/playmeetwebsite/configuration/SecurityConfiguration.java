@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/config/firebase", "/api/posts").permitAll()
                         .requestMatchers("/auth/verifyToken", "/auth/perform_login", "/auth/user/session", "/auth/perform_logout", "/fear-greed-index").permitAll()
                         .requestMatchers("/cookies/accept-cookies", "/cookies/cookies-status").permitAll()
-                        .requestMatchers("/create-post", "/api/posts/create").authenticated()
+                        .requestMatchers("/create-post", "/api/posts/create", "/api/posts/register-for-post").authenticated()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
