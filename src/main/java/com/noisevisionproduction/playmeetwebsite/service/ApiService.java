@@ -26,13 +26,17 @@ public class ApiService {
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(API_URL, String.class);
 
-        JSONObject jsonObject = new JSONObject(response);
-        JSONObject data = jsonObject.getJSONArray("data").getJSONObject(0);
+        if (response != null) {
+            JSONObject jsonObject = new JSONObject(response);
 
-        String value = data.getString("value");
-        String classification = data.getString("value_classification");
+            JSONObject data = jsonObject.getJSONArray("data").getJSONObject(0);
 
-        return "Aktualny index Bitcoin Fear & Gread: " + value + " (" + classification + ")";
+            String value = data.getString("value");
+            String classification = data.getString("value_classification");
+
+            return "Aktualny index Bitcoin Fear & Gread: " + value + " (" + classification + ")";
+        }
+        return null;
     }
 
     public ApiService() throws IOException {

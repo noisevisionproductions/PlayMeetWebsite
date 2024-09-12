@@ -50,38 +50,63 @@ public class PostsCreatingController {
         Map<String, Object> response = new HashMap<>();
         PostModel postModel = postsService.getPostById(postId);
 
+        if (isUserNotLoggedIn(userId, response)) return response;
+        if (isUserPostOwner(postModel, userId, response)) return response;
+        if (isUserAlreadyRegistered(postId, userId, response)) return response;
+        if (hasUserReachedPostLimit(userId, response)) return response;
+        if (isPostFull(postModel, response)) return response;
+
+        boolean success = postsRegistrationService.registerUserForPost(postId, userId);
+        return buildRegistrationResponse(success, response);
+    }
+
+    private boolean isUserNotLoggedIn(String userId, Map<String, Object> response) {
         if (userId == null) {
             response.put("success", false);
             response.put("message", "Musisz być zalogowany, aby się zapisać");
-            return response;
+            return true;
         }
+        return false;
+    }
 
+    private boolean isUserPostOwner(PostModel postModel, String userId, Map<String, Object> response) {
         if (postModel.getUserId().equals(userId)) {
             response.put("success", false);
             response.put("message", "To jest Twój post, więc nie możesz się do niego zapisać.");
-            return response;
+            return true;
         }
+        return false;
+    }
 
+    private boolean isUserAlreadyRegistered(String postId, String userId, Map<String, Object> response) {
         if (postsRegistrationService.isUserRegisteredForPost(postId, userId)) {
             response.put("success", false);
             response.put("message", "Już zostałeś zapisany do tego postu.");
-            return response;
+            return true;
         }
+        return false;
+    }
 
+    private boolean hasUserReachedPostLimit(String userId, Map<String, Object> response) {
         int registeredPostCount = postsRegistrationService.getRegisteredPostCountForUser(userId);
         if (registeredPostCount >= 3) {
             response.put("success", false);
             response.put("message", "Osiągnąłeś limit zapisanych postów (3).");
-            return response;
+            return true;
         }
+        return false;
+    }
 
+    private boolean isPostFull(PostModel postModel, Map<String, Object> response) {
         if (postModel.getSignedUpCount() >= postModel.getHowManyPeopleNeeded()) {
             response.put("success", false);
             response.put("message", "Osiągnięto limit zapisanych uczestników.");
-            return response;
+            return true;
         }
+        return false;
+    }
 
-        boolean success = postsRegistrationService.registerUserForPost(postId, userId);
+    private Map<String, Object> buildRegistrationResponse(boolean success, Map<String, Object> response) {
         if (success) {
             response.put("success", true);
             response.put("message", "Zostałeś pomyślnie zapisany.");

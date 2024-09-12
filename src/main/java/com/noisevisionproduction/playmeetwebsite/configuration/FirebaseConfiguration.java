@@ -1,20 +1,19 @@
 package com.noisevisionproduction.playmeetwebsite.configuration;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.database.FirebaseDatabase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Class that initialize connection with Firebase using Firebase Admin SDK.
@@ -31,18 +30,15 @@ import com.google.firebase.FirebaseOptions;
 @Configuration
 public class FirebaseConfiguration {
 
-    private final String configPath;
     private final String databaseUrl;
 
-    // loading firebase config and path from external file
-    public FirebaseConfiguration(@Value("${firebase.config.path}") String configPath, @Value("${firebase.database.url}") String databaseUrl) {
-        this.configPath = configPath;
+    public FirebaseConfiguration(@Value("${firebase.database.url}") String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        InputStream serviceAccount = new FileInputStream(configPath);
+        InputStream serviceAccount = new ClassPathResource("config-firebase.json").getInputStream();
 
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))

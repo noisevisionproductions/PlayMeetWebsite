@@ -24,7 +24,7 @@ configure<com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtens
 }
 
 group = "com.noisevisionproduction"
-version = "4"
+version = "5"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -32,6 +32,10 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+configurations.all {
+    exclude(group = "com.vaadin.external.google", module = "android-json")
 }
 
 dependencies {

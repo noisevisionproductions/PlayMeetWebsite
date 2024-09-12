@@ -50,7 +50,7 @@ public class FirebaseConfigurationTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        firebaseConfiguration = new FirebaseConfiguration(configPath, databaseUrl);
+        firebaseConfiguration = new FirebaseConfiguration(configPath);
     }
 
     @Test
