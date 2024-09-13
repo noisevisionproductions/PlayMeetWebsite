@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.JsonObject;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,13 +18,29 @@ import java.util.Map;
 @Service
 public class ApiService {
 
+    private final RestTemplate restTemplate;
     private final List<String> sports;
     private final List<String> citiesInPoland;
     private final Map<String, String> skillLevel;
     private static final String API_URL = "https://api.alternative.me/fng/?limit=1";
 
+    @Autowired
+    public ApiService(RestTemplate restTemplate) throws IOException {
+        this.restTemplate = restTemplate;
+        ObjectMapper objectMapper = new ObjectMapper();
+        InputStream inputStreamForSportNames = new ClassPathResource("json/sport_names.json").getInputStream();
+        InputStream inputStreamForCitiesInPoland = new ClassPathResource("json/cities_in_poland.json").getInputStream();
+        InputStream inputStreamForSkillLevel = new ClassPathResource("json/skill_level.json").getInputStream();
+
+        sports = objectMapper.readValue(inputStreamForSportNames, new TypeReference<>() {
+        });
+        citiesInPoland = objectMapper.readValue(inputStreamForCitiesInPoland, new TypeReference<>() {
+        });
+        skillLevel = objectMapper.readValue(inputStreamForSkillLevel, new TypeReference<>() {
+        });
+    }
+
     public String getCryptoFearAndGreedIndex() {
-        RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(API_URL, String.class);
 
         if (response != null) {
@@ -37,20 +54,6 @@ public class ApiService {
             return "Aktualny index Bitcoin Fear & Gread: " + value + " (" + classification + ")";
         }
         return null;
-    }
-
-    public ApiService() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        InputStream inputStreamForSportNames = new ClassPathResource("json/sport_names.json").getInputStream();
-        InputStream inputStreamForCitiesInPoland = new ClassPathResource("json/cities_in_poland.json").getInputStream();
-        InputStream inputStreamForSkillLevel = new ClassPathResource("json/skill_level.json").getInputStream();
-
-        sports = objectMapper.readValue(inputStreamForSportNames, new TypeReference<>() {
-        });
-        citiesInPoland = objectMapper.readValue(inputStreamForCitiesInPoland, new TypeReference<>() {
-        });
-        skillLevel = objectMapper.readValue(inputStreamForSkillLevel, new TypeReference<>() {
-        });
     }
 
     public List<String> getAllSports() {

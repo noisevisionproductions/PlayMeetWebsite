@@ -76,9 +76,8 @@ public class PostsService extends LogsPrint {
 
             if (documentSnapshot.exists()) {
                 return documentSnapshot.toObject(PostModel.class);
-            } else {
-                return null;
             }
+            return null;
         } catch (Exception e) {
             logError("Error fetching post by ID: " + postId, e);
             return null;
@@ -111,8 +110,7 @@ public class PostsService extends LogsPrint {
         });
 
         try {
-            // Ensure transaction completes
-            transactionFuture.get();  // Wait for the transaction to complete
+            transactionFuture.get();
             System.out.println("Signed up count incremented successfully for post: " + postId);
         } catch (Exception e) {
             logError("Error incrementing signed up count for post: " + postId, e);
