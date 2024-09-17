@@ -8,6 +8,7 @@ import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
 import com.noisevisionproduction.playmeetwebsite.service.UserService;
 import com.noisevisionproduction.playmeetwebsite.service.dataEncryption.EncryptionService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +55,21 @@ public class UserProfileController extends LogsPrint {
         model.addAttribute("isOwnProfile", isOwnProfile);
 
         return "user_account";
+    }
+
+    @GetMapping("/{userId}/edit")
+    public String editProfile(@PathVariable String userId, Model model, HttpServletRequest request) {
+        String loggedInUser = (cookieService.getLoginStatusCookie(request));
+        CompletableFuture<UserModel> userFuture = userService.getUserById(userId);
+        UserModel userModel = userFuture.join();
+        decryptUserData(userModel);
+        boolean isOwnProfile = userId.equals(loggedInUser);
+
+        model.addAttribute("user", userModel);
+        model.addAttribute("isOwnProfile", isOwnProfile);
+
+        // TODO oprocz zmiany podstawowych danych profilowych, dac uzytkownikowi mozliwosc zmiany hasla i email
+        return "user_account_edit";
     }
 
     private void decryptUserData(UserModel userModel) {

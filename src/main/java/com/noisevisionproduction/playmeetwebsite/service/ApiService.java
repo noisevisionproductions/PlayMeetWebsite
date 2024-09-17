@@ -2,8 +2,6 @@ package com.noisevisionproduction.playmeetwebsite.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -18,15 +16,13 @@ import java.util.Map;
 @Service
 public class ApiService {
 
-    private final RestTemplate restTemplate;
     private final List<String> sports;
     private final List<String> citiesInPoland;
     private final Map<String, String> skillLevel;
     private static final String API_URL = "https://api.alternative.me/fng/?limit=1";
 
     @Autowired
-    public ApiService(RestTemplate restTemplate) throws IOException {
-        this.restTemplate = restTemplate;
+    public ApiService() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         InputStream inputStreamForSportNames = new ClassPathResource("json/sport_names.json").getInputStream();
         InputStream inputStreamForCitiesInPoland = new ClassPathResource("json/cities_in_poland.json").getInputStream();
@@ -41,6 +37,7 @@ public class ApiService {
     }
 
     public String getCryptoFearAndGreedIndex() {
+        RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(API_URL, String.class);
 
         if (response != null) {

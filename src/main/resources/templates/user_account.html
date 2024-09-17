@@ -28,7 +28,12 @@
             <div class="header-actions">
                 <h2 class="nickname"
                     th:text="${user.nickname != null} ? ${user.nickname} : 'Profil nie został uzupełniony.'"></h2>
-                <button type="button" class="logout-button" onclick="performLogout()">Wyloguj się</button>
+                <a th:href="@{/user_account/{userId}/edit(userId=${user.userId})}" class="editProfileButton"
+                   th:if="${isOwnProfile}">Edytuj profil
+                </a>
+                <a href="#" class="logoutButton"
+                        th:if="${isOwnProfile}" onclick="performLogout()">Wyloguj się
+                </a>
             </div>
             <p class="real-name"><strong>Imię:</strong> <span
                     th:text="${user.name != null} ?  ${user.name} : 'Nie podano'"></span></p>

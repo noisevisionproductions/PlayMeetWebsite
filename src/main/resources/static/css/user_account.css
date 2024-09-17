@@ -61,19 +61,34 @@ body {
 .nickname {
     font-size: 1.5rem;
     margin: 0;
+    flex-grow: 1;
 }
 
-.logout-button {
+.logoutButton, .editProfileButton {
     background-color: #f44336;
+    text-decoration: none;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    margin-left: 10px;
 }
 
-.logout-button:hover {
-    background-color: #d32f2f;
+.logoutButton {
+    background-color: #f44336;
+}
+
+.logoutButton:hover {
+    background-color: #882f2f;
+}
+
+.editProfileButton {
+    background-color: #0b84f3;
+}
+
+.editProfileButton:hover {
+    background-color: #0464f3;
 }
 
 .about-me {
