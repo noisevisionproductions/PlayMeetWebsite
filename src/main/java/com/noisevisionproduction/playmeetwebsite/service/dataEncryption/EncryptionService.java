@@ -1,5 +1,7 @@
 package com.noisevisionproduction.playmeetwebsite.service.dataEncryption;
 
+import com.noisevisionproduction.playmeetwebsite.model.UserModel;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 @Service
-public class EncryptionService {
+public class EncryptionService extends LogsPrint {
 
     private final byte[] key;
 
@@ -37,5 +39,43 @@ public class EncryptionService {
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
         byte[] decryptedValue = cipher.doFinal(encValue);
         return new String(decryptedValue, StandardCharsets.UTF_8);
+    }
+
+    public void encryptUserData(UserModel userModel) {
+        try {
+            if (userModel.getName() != null) {
+                userModel.setName(encrypt(userModel.getName()));
+            }
+            if (userModel.getLocation() != null) {
+                userModel.setLocation(encrypt(userModel.getLocation()));
+            }
+            if (userModel.getAboutMe() != null) {
+                userModel.setAboutMe(encrypt(userModel.getAboutMe()));
+            }
+        } catch (Exception e) {
+            logError("Encryption error: ", e);
+        }
+    }
+
+    public void decryptUserData(UserModel userModel) {
+        try {
+            if (userModel.getName() != null) {
+                userModel.setName(decrypt(userModel.getName()));
+            }
+            if (userModel.getAge() != null) {
+                userModel.setAge(decrypt(userModel.getAge()));
+            }
+            if (userModel.getLocation() != null) {
+                userModel.setLocation(decrypt(userModel.getLocation()));
+            }
+            if (userModel.getGender() != null) {
+                userModel.setGender(decrypt(userModel.getGender()));
+            }
+            if (userModel.getAboutMe() != null) {
+                userModel.setAboutMe(decrypt(userModel.getAboutMe()));
+            }
+        } catch (Exception e) {
+            logError("Decryption error: ", e);
+        }
     }
 }

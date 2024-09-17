@@ -1,5 +1,6 @@
 package com.noisevisionproduction.playmeetwebsite.service;
 
+import com.google.api.core.ApiFuture;
 import com.google.firebase.database.*;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
@@ -36,8 +37,29 @@ public class UserService extends LogsPrint {
         return completableFuture;
     }
 
-    public void saveUser(UserModel userModel) {
-        DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userModel.getUserId());
-        userReference.setValueAsync(userModel);
+    public void updateUser(String userId, UserModel userModel) {
+        UserModel existingUser = getUserById(userId).join();
+
+        if (userModel.getAvatar() == null || userModel.getAvatar().isEmpty()) {
+            userModel.setAvatar(existingUser.getAvatar());
+        }
+
+        firebaseDatabase.getReference("UserModel/" + userId).setValueAsync(userModel);
+    }
+
+    public CompletableFuture<Void> updateUserAvatar(String userId, String avatarUrl) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("UserModel").child(userId);
+        ApiFuture<Void> apiFuture = userRef.child("avatar").setValueAsync(avatarUrl);
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+
+        apiFuture.addListener(() -> {
+            try {
+                completableFuture.complete(null);
+            } catch (Exception e) {
+                completableFuture.completeExceptionally(e);
+            }
+        }, Runnable::run);
+
+        return completableFuture;
     }
 }

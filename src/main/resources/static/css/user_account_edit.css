@@ -45,8 +45,7 @@ input {
     border-radius: 4px;
 }
 
-
-button {
+.saveDataButton, .userProfileButton {
     padding: 0.75rem;
     background-color: #007bff;
     border: none;
@@ -54,19 +53,75 @@ button {
     color: #fff;
     font-size: 1rem;
     cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
-button:hover {
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.avatarButtonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.userProfileButton:hover, .changeAvatarButton:hover {
     background-color: #0056b3;
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+.saveDataButton {
+    background-color: #1c963d;
 }
 
-a:hover {
-    text-decoration: underline;
+.saveDataButton:hover {
+    background-color: #3c763d;
+}
+
+.changeAvatarButton, .deleteAvatarButton {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    height: 100%;
+}
+
+.deleteAvatarButton, .userProfileButton {
+    background-color: #f44336;
+}
+
+.deleteAvatarButton:hover, .userProfileButton:hover {
+    background-color: #882f2f;
+}
+
+#avatar {
+    display: none;
+}
+
+.avatar {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0b84f3;
+    margin-bottom: 20px;
 }

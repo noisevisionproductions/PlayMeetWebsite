@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:fragment="post" class="post">
     <div class="post-header">
-        <img th:src="${post.avatar != null} ? ${post.avatar} : 'assets/post/sample_avatar.png'"
-             alt="Avatar użytkownika" class="post-avatar" src="">
+        <div class="avatar">
+            <img th:src="${post.avatar != null} ? ${post.avatar} : '/assets/post/sample_avatar.png'"
+                 alt="Avatar użytkownika" class="post-avatar" src="">
+        </div>
         <div class="post-info">
             <div class="post-cityName">
                 <i class="fa-solid fa-map-location-dot"></i>

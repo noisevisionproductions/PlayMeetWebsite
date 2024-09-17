@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil zaktualizowany</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/user_account_edit_success.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div th:if="${updateSuccess}" class="successMessage">
+        <p>Dane zostały pomyślnie zaktualizowane!</p>
+    </div>
+    <div th:if="${updateError}" class="successMessage">
+        <p>Błąd </p>
+    </div>
+    <div class="buttonContainer">
+        <a th:href="@{/user_account/{userId}(userId=${user.userId})}" class="userProfileButton">
+            Wyświetl swój profil
+        </a>
+    </div>
+</div>
+</body>
+</html>

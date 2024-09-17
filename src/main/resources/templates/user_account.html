@@ -18,6 +18,10 @@
 </head>
 <body>
 
+<div class="menuButtonContainer">
+    <a th:href="@{/}" class="mainMenuButton">Menu główne</a>
+</div>
+
 <div class="profile-container">
     <div class="profile-header">
         <div class="avatar">
@@ -32,7 +36,7 @@
                    th:if="${isOwnProfile}">Edytuj profil
                 </a>
                 <a href="#" class="logoutButton"
-                        th:if="${isOwnProfile}" onclick="performLogout()">Wyloguj się
+                   th:if="${isOwnProfile}" onclick="performLogout()">Wyloguj się
                 </a>
             </div>
             <p class="real-name"><strong>Imię:</strong> <span

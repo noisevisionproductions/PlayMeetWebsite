@@ -48,7 +48,7 @@ public class PostsDetailsService extends LogsPrint {
         return posts;
     }
 
-    private void postWithUserDetails(PostModel postModel) throws InterruptedException, ExecutionException {
+    public void postWithUserDetails(PostModel postModel) throws InterruptedException, ExecutionException {
         CompletableFuture<UserModel> userFuture = getUserInformationByHisId(postModel.getUserId());
         UserModel userModel = userFuture.get();
         if (userModel != null) {
