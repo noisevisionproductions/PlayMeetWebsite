@@ -2,11 +2,13 @@ package com.noisevisionproduction.playmeetwebsite.controller;
 
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -39,9 +41,11 @@ class PostsDisplayControllerTest {
         postModel.setPostId("12345");
         posts.add(postModel);
 
+        HttpServletRequest request = new MockHttpServletRequest();
+
         when(postsDetailsServiceMock.getAllPosts()).thenReturn(posts);
 
-        String viewName = postsDisplayController.showPostPage(modelMock);
+        String viewName = postsDisplayController.showPostPage(modelMock, request);
 
         assertEquals("posts", viewName);
         verify(modelMock, times(1)).addAttribute("posts", posts);
@@ -50,8 +54,9 @@ class PostsDisplayControllerTest {
     @Test
     public void testShowPostPageError() throws ExecutionException, InterruptedException {
         when(postsDetailsServiceMock.getAllPosts()).thenThrow(new ExecutionException(new RuntimeException("Error")));
+        HttpServletRequest request = new MockHttpServletRequest();
 
-        String viewName = postsDisplayController.showPostPage(modelMock);
+        String viewName = postsDisplayController.showPostPage(modelMock, request);
 
         assertEquals("error", viewName);
         verify(modelMock, times(1)).addAttribute("error", "Error fetching posts");

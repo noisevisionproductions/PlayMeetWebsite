@@ -91,7 +91,7 @@ class PostsServiceTest {
     }
 
     @Test
-    void getPostById() throws ExecutionException, InterruptedException {
+    void getPostByPostId() throws ExecutionException, InterruptedException {
         String postId = "postId";
         DocumentReference documentReferenceMock = mock(DocumentReference.class);
 
@@ -104,7 +104,7 @@ class PostsServiceTest {
         when(documentSnapshotMock.exists()).thenReturn(true);
         when(documentSnapshotMock.toObject(PostModel.class)).thenReturn(new PostModel());
 
-        PostModel postModel = postsService.getPostById(postId);
+        PostModel postModel = postsService.getPostByPostId(postId);
 
         assertNotNull(postModel, "PostModel should not be null for a successful retrieval");
         verify(firestoreMock).collection("PostCreating");
@@ -114,7 +114,7 @@ class PostsServiceTest {
         verify(documentSnapshotMock).exists();
         verify(documentSnapshotMock).toObject(PostModel.class);
 
-        PostModel errorPostModel = postsService.getPostById(postId);
+        PostModel errorPostModel = postsService.getPostByPostId(postId);
 
         assertNull(errorPostModel, "PostModel should be null when an exception occurs");
         verify(firestoreMock, times(2)).collection("PostCreating");

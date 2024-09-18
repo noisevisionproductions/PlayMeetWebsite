@@ -2,10 +2,7 @@ package com.noisevisionproduction.playmeetwebsite.controller;
 
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
-import com.noisevisionproduction.playmeetwebsite.service.CookieService;
-import com.noisevisionproduction.playmeetwebsite.service.FileStorageService;
-import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
-import com.noisevisionproduction.playmeetwebsite.service.UserService;
+import com.noisevisionproduction.playmeetwebsite.service.*;
 import com.noisevisionproduction.playmeetwebsite.service.dataEncryption.EncryptionService;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,14 +25,18 @@ public class UserProfileController extends LogsPrint {
     private final CookieService cookieService;
     private final PostsDetailsService postsDetailsService;
     private final FileStorageService fileStorageService;
+    private final PostsRegistrationService postsRegistrationService;
+    private final PostsService postsService;
 
     @Autowired
-    public UserProfileController(UserService userService, EncryptionService encryptionService, CookieService cookieService, PostsDetailsService postsDetailsService, FileStorageService fileStorageService) {
+    public UserProfileController(UserService userService, EncryptionService encryptionService, CookieService cookieService, PostsDetailsService postsDetailsService, FileStorageService fileStorageService, PostsRegistrationService postsRegistrationService, PostsService postsService) {
         this.userService = userService;
         this.encryptionService = encryptionService;
         this.cookieService = cookieService;
         this.postsDetailsService = postsDetailsService;
         this.fileStorageService = fileStorageService;
+        this.postsRegistrationService = postsRegistrationService;
+        this.postsService = postsService;
     }
 
     @GetMapping("/{userId}")
@@ -43,6 +44,7 @@ public class UserProfileController extends LogsPrint {
         List<PostModel> userPosts = postsDetailsService.getUserPosts(userId);
         List<PostModel> userRegisteredPosts = postsDetailsService.getPostsWhereUserRegistered(userId);
 
+        model.addAttribute("loggedInUserId", getLoggedInUser(request));
         model.addAttribute("userPosts", userPosts);
         model.addAttribute("userRegisteredPosts", userRegisteredPosts);
 
@@ -53,9 +55,7 @@ public class UserProfileController extends LogsPrint {
 
     @GetMapping("/{userId}/edit")
     public String editProfile(@PathVariable String userId, Model model, HttpServletRequest request) {
-        String loggedInUserId = cookieService.getLoginStatusCookie(request);
-
-        if (!userId.equals(loggedInUserId)) {
+        if (!userId.equals(getLoggedInUser(request))) {
             return "redirect:/user_account/" + userId;
         }
 
@@ -100,13 +100,16 @@ public class UserProfileController extends LogsPrint {
     }
 
     private void populateUserProfile(String userId, Model model, HttpServletRequest request) {
-        String loggedInUser = cookieService.getLoginStatusCookie(request);
         CompletableFuture<UserModel> userFuture = userService.getUserById(userId);
         UserModel userModel = userFuture.join();
         encryptionService.decryptUserData(userModel);
-        boolean isOwnProfile = userId.equals(loggedInUser);
+        boolean isOwnProfile = userId.equals(getLoggedInUser(request));
 
         model.addAttribute("user", userModel);
         model.addAttribute("isOwnProfile", isOwnProfile);
+    }
+
+    private String getLoggedInUser(HttpServletRequest request) {
+        return cookieService.getLoginStatusCookie(request);
     }
 }

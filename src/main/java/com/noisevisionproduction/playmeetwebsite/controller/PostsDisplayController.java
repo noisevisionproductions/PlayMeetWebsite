@@ -1,8 +1,10 @@
 package com.noisevisionproduction.playmeetwebsite.controller;
 
-import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
+import com.noisevisionproduction.playmeetwebsite.service.CookieService;
 import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
+import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,22 +44,39 @@ import java.util.concurrent.ExecutionException;
 public class PostsDisplayController extends LogsPrint {
 
     private final PostsDetailsService postsDetailsService;
+    private final CookieService cookieService;
 
     @Autowired
-    public PostsDisplayController(PostsDetailsService postsDetailsService) {
+    public PostsDisplayController(PostsDetailsService postsDetailsService, CookieService cookieService) {
         this.postsDetailsService = postsDetailsService;
+        this.cookieService = cookieService;
     }
 
     @GetMapping
-    public String showPostPage(Model model) {
+    public String showPostPage(Model model, HttpServletRequest request) {
         try {
-            List<PostModel> userPosts = postsDetailsService.getAllPosts();
-            model.addAttribute("posts", userPosts);
+            String loggedInUser = cookieService.getLoginStatusCookie(request);
+            List<PostModel> userRegisteredPosts = postsDetailsService.getPostsWhereUserRegistered(loggedInUser);
+
+            model.addAttribute("loggedInUserId", loggedInUser);
+            model.addAttribute("userRegisteredPosts", userRegisteredPosts);
+            model.addAttribute("posts", hidePostsWhereUserIsRegistered(userRegisteredPosts));
         } catch (InterruptedException | ExecutionException e) {
             logError("Error fetching posts ", e);
             model.addAttribute("error", "Error fetching posts");
             return "error";
         }
         return "posts";
+    }
+
+    private List<PostModel> hidePostsWhereUserIsRegistered(List<PostModel> userRegisteredPosts) throws ExecutionException, InterruptedException {
+        List<String> registeredPostsIds = userRegisteredPosts.stream()
+                .map(PostModel::getPostId)
+                .toList();
+
+        return postsDetailsService.getAllPosts()
+                .stream()
+                .filter(post -> !registeredPostsIds.contains(post.getPostId()))
+                .toList();
     }
 }

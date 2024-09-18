@@ -146,7 +146,7 @@ class PostsRegistrationServiceTest {
     }
 
     @Test
-    void incrementUserPostCount() {
+    void updateUserJoinedPostsCount() {
         String userId = "userId";
         MutableData mutableData = mock(MutableData.class);
         DatabaseReference databaseReference = mock(DatabaseReference.class);
@@ -165,14 +165,14 @@ class PostsRegistrationServiceTest {
             return null;
         }).when(childReference).runTransaction(any(Transaction.Handler.class));
 
-        postsRegistrationService.incrementUserPostCount(userId);
+        postsRegistrationService.updateUserJoinedPostsCount(userId, true);
 
         verify(mutableData).setValue(2);
         verify(childReference).runTransaction(any(Transaction.Handler.class));
 
         // Case when post count is null
         when(mutableData.getValue(Integer.class)).thenReturn(null);
-        postsRegistrationService.incrementUserPostCount(userId);
+        postsRegistrationService.updateUserJoinedPostsCount(userId, true);
         verify(mutableData).setValue(1);
 
         // Failure simulation
@@ -182,7 +182,7 @@ class PostsRegistrationServiceTest {
             return null;
         }).when(childReference).runTransaction(any(Transaction.Handler.class));
 
-        postsRegistrationService.incrementUserPostCount(userId);
+        postsRegistrationService.updateUserJoinedPostsCount(userId, true);
     }
 
     @Test
@@ -196,14 +196,14 @@ class PostsRegistrationServiceTest {
         when(apiFuture.get()).thenReturn(documentReference);
 
         doNothing().when(postsService).incrementSignedUpCount(postId, true);
-        doNothing().when(postsRegistrationService).incrementUserPostCount(userId);
+        postsRegistrationService.updateUserJoinedPostsCount(userId, true);
 
         boolean result = postsRegistrationService.registerUserForPost(postId, userId);
 
         assertTrue(result);
         verify(collectionReferenceMock).add(any(RegistrationModel.class));
         verify(postsService).incrementSignedUpCount(postId, true);
-        verify(postsRegistrationService).incrementUserPostCount(userId);
+        postsRegistrationService.updateUserJoinedPostsCount(userId, true);
 
         // Throwing error
         doThrow(new RuntimeException("Error registering user for post")).when(collectionReferenceMock).add(any(RegistrationModel.class));

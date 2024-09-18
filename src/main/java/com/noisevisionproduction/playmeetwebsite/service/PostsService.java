@@ -69,7 +69,7 @@ public class PostsService extends LogsPrint {
         }
     }
 
-    public PostModel getPostById(String postId) {
+    public PostModel getPostByPostId(String postId) {
         try {
             DocumentReference documentReference = firestore.collection("PostCreating").document(postId);
             ApiFuture<DocumentSnapshot> future = documentReference.get();

@@ -41,10 +41,8 @@ class PostsCreatingControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(new PostsCreatingController(
-                postsRegistrationService,
                 postCreatingService,
-                cookieService,
-                postsService
+                cookieService
         )).build();
     }
 
@@ -74,7 +72,7 @@ class PostsCreatingControllerTest {
         postModel.setUserId("userIdSecond");
 
         when(cookieService.getLoginStatusCookie(any(HttpServletRequest.class))).thenReturn(userId);
-        when(postsService.getPostById(postId)).thenReturn(postModel);
+        when(postsService.getPostByPostId(postId)).thenReturn(postModel);
         when(postsRegistrationService.isUserRegisteredForPost(postId, userId)).thenReturn(false);
         when(postsRegistrationService.getRegisteredPostCountForUser(userId)).thenReturn(1);
         when(postsRegistrationService.registerUserForPost(postId, userId)).thenReturn(true);
@@ -99,7 +97,7 @@ class PostsCreatingControllerTest {
         postModel.setUserId(userId);
 
         when(cookieService.getLoginStatusCookie(any(HttpServletRequest.class))).thenReturn(userId);
-        when(postsService.getPostById(postId)).thenReturn(postModel);
+        when(postsService.getPostByPostId(postId)).thenReturn(postModel);
 
         performPostRequestAndExpectSuccess(postId, false, "To jest Twój post, więc nie możesz się do niego zapisać.");
     }
@@ -113,7 +111,7 @@ class PostsCreatingControllerTest {
         postModel.setUserId("userIdSecond");
 
         when(cookieService.getLoginStatusCookie(any(HttpServletRequest.class))).thenReturn(userId);
-        when(postsService.getPostById(postId)).thenReturn(postModel);
+        when(postsService.getPostByPostId(postId)).thenReturn(postModel);
         when(postsRegistrationService.isUserRegisteredForPost(postId, userId)).thenReturn(true);
 
         performPostRequestAndExpectSuccess(postId, false, "Już zostałeś zapisany do tego postu.");
@@ -128,7 +126,7 @@ class PostsCreatingControllerTest {
         postModel.setUserId("userIdSecond");
 
         when(cookieService.getLoginStatusCookie(any(HttpServletRequest.class))).thenReturn(userId);
-        when(postsService.getPostById(postId)).thenReturn(postModel);
+        when(postsService.getPostByPostId(postId)).thenReturn(postModel);
         when(postsRegistrationService.getRegisteredPostCountForUser(userId)).thenReturn(3);
 
         performPostRequestAndExpectSuccess(postId, false, "Osiągnąłeś limit zapisanych postów (3).");
@@ -145,7 +143,7 @@ class PostsCreatingControllerTest {
         postModel.setHowManyPeopleNeeded(1);
 
         when(cookieService.getLoginStatusCookie(any(HttpServletRequest.class))).thenReturn(userId);
-        when(postsService.getPostById(postId)).thenReturn(postModel);
+        when(postsService.getPostByPostId(postId)).thenReturn(postModel);
 
         performPostRequestAndExpectSuccess(postId, false, "Osiągnięto limit zapisanych uczestników.");
     }

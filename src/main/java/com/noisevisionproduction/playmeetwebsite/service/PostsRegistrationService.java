@@ -7,6 +7,7 @@ import com.google.firebase.database.Transaction;
 import com.noisevisionproduction.playmeetwebsite.model.RegistrationModel;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import com.google.cloud.Timestamp;
 
@@ -85,8 +86,7 @@ public class PostsRegistrationService extends LogsPrint {
         }
     }
 
-
-    public void incrementUserPostCount(String userId) {
+    public void updateUserJoinedPostsCount(String userId, boolean increment) {
         DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userId);
         userReference.child("joinedPostsCount").runTransaction(new Transaction.Handler() {
             @Override
@@ -96,16 +96,21 @@ public class PostsRegistrationService extends LogsPrint {
                 if (userCount == null) {
                     userCount = 0;
                 }
-                currentData.setValue(userCount + 1);
+
+                if (increment) {
+                    currentData.setValue(userCount + 1);
+                } else if (userCount > 0) {
+                    currentData.setValue(userCount - 1);
+                }
                 return Transaction.success(currentData);
             }
 
             @Override
             public void onComplete(DatabaseError error, boolean committed, DataSnapshot currentData) {
                 if (error != null) {
-                    logError("Error incrementing post count for user: " + userId, error.toException());
+                    logError("Error updating post count for user: " + userId, error.toException());
                 } else if (committed) {
-                    logDebug("Successfully incremented post count. - " + userId);
+                    logDebug("Successfully updated post count for user: " + userId);
                 }
             }
         });
@@ -118,11 +123,37 @@ public class PostsRegistrationService extends LogsPrint {
             registrationModel.setUserId(userId);
             registrationModel.setRegistrationDate(Timestamp.now());
             firestore.collection("registrations").add(registrationModel);
-            incrementUserPostCount(userId);
+
+            updateUserJoinedPostsCount(userId, true);
             postsService.incrementSignedUpCount(postId, true);
+
             return true;
         } catch (Exception e) {
             logError("Error registering user for post: " + postId, e);
+            return false;
+        }
+    }
+
+    public boolean unregisterUserFromThePost(String postId, String userId) {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
+                    .whereEqualTo("postId", postId)
+                    .whereEqualTo("userId", userId)
+                    .get();
+
+            List<QueryDocumentSnapshot> documentSnapshots = future.get().getDocuments();
+
+            if (!documentSnapshots.isEmpty()) {
+                for (QueryDocumentSnapshot document : documentSnapshots) {
+                    firestore.collection("registrations").document(document.getId()).delete();
+                }
+
+                updateUserJoinedPostsCount(userId, false);
+                postsService.incrementSignedUpCount(postId, false);
+            }
+            return true;
+        } catch (Exception e) {
+            logError("Error unregistering user from post: " + postId, e);
             return false;
         }
     }
