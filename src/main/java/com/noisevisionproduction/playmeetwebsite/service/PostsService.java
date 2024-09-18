@@ -7,6 +7,7 @@ import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -81,6 +82,24 @@ public class PostsService extends LogsPrint {
         } catch (Exception e) {
             logError("Error fetching post by ID: " + postId, e);
             return null;
+        }
+    }
+
+    public List<PostModel> getRegisteredPostsByIds(List<String> postIds) {
+        try {
+            List<PostModel> posts = new ArrayList<>();
+            for (String postId : postIds) {
+                ApiFuture<DocumentSnapshot> future = firestore.collection("PostCreating").document(postId).get();
+                DocumentSnapshot documentSnapshot = future.get();
+                if (documentSnapshot.exists()) {
+                    PostModel postModel = documentSnapshot.toObject(PostModel.class);
+                    posts.add(postModel);
+                }
+            }
+            return posts;
+        } catch (Exception e) {
+            logError("Error fetching posts for user: ", e);
+            return Collections.emptyList();
         }
     }
 

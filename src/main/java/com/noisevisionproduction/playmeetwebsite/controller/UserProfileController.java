@@ -1,7 +1,5 @@
 package com.noisevisionproduction.playmeetwebsite.controller;
 
-import com.google.cloud.storage.Bucket;
-import com.google.firebase.cloud.StorageClient;
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
 import com.noisevisionproduction.playmeetwebsite.service.CookieService;
@@ -12,8 +10,6 @@ import com.noisevisionproduction.playmeetwebsite.service.dataEncryption.Encrypti
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +41,10 @@ public class UserProfileController extends LogsPrint {
     @GetMapping("/{userId}")
     public String getProfile(@PathVariable("userId") String userId, Model model, HttpServletRequest request) throws ExecutionException, InterruptedException {
         List<PostModel> userPosts = postsDetailsService.getUserPosts(userId);
-        model.addAttribute("posts", userPosts);
+        List<PostModel> userRegisteredPosts = postsDetailsService.getPostsWhereUserRegistered(userId);
+
+        model.addAttribute("userPosts", userPosts);
+        model.addAttribute("userRegisteredPosts", userRegisteredPosts);
 
         populateUserProfile(userId, model, request);
 

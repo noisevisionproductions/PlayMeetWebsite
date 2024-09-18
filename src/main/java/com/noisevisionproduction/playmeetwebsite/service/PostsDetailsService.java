@@ -27,6 +27,23 @@ public class PostsDetailsService extends LogsPrint {
         this.userService = userService;
     }
 
+    public List<PostModel> getPostsWhereUserRegistered(String userId) throws ExecutionException, InterruptedException {
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsByUserId(userId);
+
+        List<String> postIds = registrations.stream()
+                .map(regs -> (String) regs.get("postId"))
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<PostModel> posts = postsService.getRegisteredPostsByIds(postIds);
+
+        for (PostModel postModel : posts) {
+            postWithUserDetails(postModel);
+            registrationsOfThePosts(postModel);
+        }
+        return posts;
+    }
+
     public List<PostModel> getAllPosts() throws InterruptedException, ExecutionException {
         List<PostModel> posts = postsService.getPosts();
 
@@ -37,7 +54,6 @@ public class PostsDetailsService extends LogsPrint {
         return posts;
     }
 
-    // New method to get posts created by a specific user
     public List<PostModel> getUserPosts(String userId) throws InterruptedException, ExecutionException {
         List<PostModel> posts = postsService.getPostsByUserId(userId);
 

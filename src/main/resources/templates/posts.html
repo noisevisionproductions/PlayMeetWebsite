@@ -21,8 +21,10 @@
 <body>
 <div class="container">
     <h1 class="posts-header">Wszystkie posty:</h1>
-    <!-- Individual post -->
     <div th:each="post : ${posts}" th:insert="~{fragments/post_fragment :: post}"></div>
+    <div th:if="${posts == null or posts.size() == 0}">
+        <p class="no-posts">Brak postów do wyświetlenia.</p>
+    </div>
 </div>
 </body>
 </html>

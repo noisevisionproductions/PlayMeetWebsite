@@ -44,6 +44,22 @@ public class PostsRegistrationService extends LogsPrint {
         }
     }
 
+    public List<Map<String, Object>> getRegistrationsByUserId(String userId) {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
+                    .whereEqualTo("userId", userId)
+                    .get();
+
+            List<QueryDocumentSnapshot> documentSnapshots = future.get().getDocuments();
+            return documentSnapshots.stream()
+                    .map(QueryDocumentSnapshot::getData)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logError("Error fetching posts for user: " + userId, e);
+            return Collections.emptyList();
+        }
+    }
+
     public boolean isUserRegisteredForPost(String postId, String userId) {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
@@ -68,6 +84,7 @@ public class PostsRegistrationService extends LogsPrint {
             return 0;
         }
     }
+
 
     public void incrementUserPostCount(String userId) {
         DatabaseReference userReference = firebaseDatabase.getReference("UserModel/" + userId);

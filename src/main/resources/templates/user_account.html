@@ -54,12 +54,22 @@
         <p th:text="${user.aboutMe != null} ?  ${user.aboutMe} : 'Nie podano'"></p>
     </div>
     <div class="user-posts">
-        <h3 class="post-header">Posty</h3>
-        <div th:if="${posts != null and posts.size() > 0}">
-            <div th:each="post : ${posts}" th:insert="~{fragments/post_fragment :: post}"></div>
+        <h3 class="post-header" th:if="${isOwnProfile}">Twoje posty</h3>
+        <h3 class="post-header" th:unless="${isOwnProfile}">Posty użytkownika</h3>
+        <div th:if="${userPosts != null and userPosts.size() > 0}">
+            <div th:each="post : ${userPosts}" th:insert="~{fragments/post_fragment :: post}"></div>
         </div>
-        <div th:if="${posts == null or posts.size() == 0}">
+        <div th:if="${userPosts == null or userPosts.size() == 0}">
             <p class="no-posts">Brak postów użytkownika.</p>
+        </div>
+    </div>
+    <div class="user-posts" th:if="${isOwnProfile}">
+        <h3 class="post-header">Posty, do których się zapisałeś</h3>
+        <div th:if="${userRegisteredPosts != null and userRegisteredPosts.size() > 0}">
+            <div th:each="post : ${userRegisteredPosts}" th:insert="~{fragments/post_fragment :: post}"></div>
+        </div>
+        <div th:if="${userRegisteredPosts == null or userRegisteredPosts.size() == 0}">
+            <p class="no-posts">Nie zapisałeś się do żadnych aktywości.</p>
         </div>
     </div>
 </div>

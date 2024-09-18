@@ -41,7 +41,9 @@
             <div>Zapisani:
                 <div th:if="${post.registrations != null && #lists.isEmpty(post.registrations)}">Brak zapisanych</div>
                 <div th:each="user : ${post.registrations}" th:if="${post.registrations != null}">
-                    <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
+                    <div class="avatar">
+                        <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,13 +91,13 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ postId: postId }) // Sending postId in the body as JSON
+                body: JSON.stringify({ postId: postId })
             })
                 .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // Attempt to parse as JSON
+                return response.json();
             })
                 .then(data => {
                 if (data.success) {

@@ -51,8 +51,8 @@ public class PostsDisplayController extends LogsPrint {
     @GetMapping
     public String showPostPage(Model model) {
         try {
-            List<PostModel> posts = postsDetailsService.getAllPosts();
-            model.addAttribute("posts", posts);
+            List<PostModel> userPosts = postsDetailsService.getAllPosts();
+            model.addAttribute("posts", userPosts);
         } catch (InterruptedException | ExecutionException e) {
             logError("Error fetching posts ", e);
             model.addAttribute("error", "Error fetching posts");

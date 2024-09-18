@@ -24,7 +24,7 @@ configure<com.google.cloud.tools.gradle.appengine.appyaml.AppEngineAppYamlExtens
 }
 
 group = "com.noisevisionproduction"
-version = "5"
+version = "5.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
