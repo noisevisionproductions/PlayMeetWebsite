@@ -1,0 +1,67 @@
+/* Navbar styles */
+#mainNav {
+    background: linear-gradient(90deg, #333, #1c8a82);
+    min-height: 3rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1030;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding-left: 8rem;
+    padding-right: 8rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    transition: background 0.3s ease-in-out;
+}
+
+#mainNav .navbar-brand {
+    color: #fff;
+    font-weight: 700;
+    padding: 0.5rem 0;
+    font-size: 1.3rem;
+    transition: color 0.3s ease-in-out;
+}
+
+#mainNav .navbar-brand:hover {
+    color: #f0f0f0;
+}
+
+#mainNav .nav-link {
+    color: #f0f0f0;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    margin-left: 15px;
+    transition: color 0.3s ease-in-out;
+}
+
+#mainNav .nav-link:hover,
+#mainNav .nav-link:focus {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+#mainNav .navbar-toggler {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    transition: border-color 0.3s ease-in-out;
+}
+
+#mainNav .navbar-toggler:hover {
+    border-color: #fff;
+}
+
+#mainNav .navbar-toggler:focus {
+    outline: none;
+}
+
+/* Icon adjustments */
+.favicon-icon {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.button-play-store {
+    height: 24px;
+    margin-right: 5px;
+}

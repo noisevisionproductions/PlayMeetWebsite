@@ -47,7 +47,7 @@ public class UserService extends LogsPrint {
         firebaseDatabase.getReference("UserModel/" + userId).setValueAsync(userModel);
     }
 
-    public CompletableFuture<Void> updateUserAvatar(String userId, String avatarUrl) {
+    public void updateUserAvatar(String userId, String avatarUrl) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("UserModel").child(userId);
         ApiFuture<Void> apiFuture = userRef.child("avatar").setValueAsync(avatarUrl);
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
@@ -60,6 +60,5 @@ public class UserService extends LogsPrint {
             }
         }, Runnable::run);
 
-        return completableFuture;
     }
 }

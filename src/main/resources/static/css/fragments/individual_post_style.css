@@ -1,22 +1,27 @@
+/* Base styles for headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Varela Round", sans-serif;
+}
+
+/* Post container */
 .post {
     width: 95%;
     max-width: 800px;
-    background: #fff;
     padding: 20px;
     margin: 20px 0;
+    background: #fff;
     border: 1px solid #ddd;
+    border-left: 5px solid #0b84f3;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: visible;
     transition: transform 0.2s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 300px;
-    overflow: visible;
-    border-left: 5px solid #0b84f3;
 }
-
 
 .post:hover {
     transform: scale(1.02);
@@ -24,9 +29,19 @@
 
 @media (max-width: 600px) {
     .post {
-        height: auto;
         padding: 10px;
+        height: auto;
     }
+}
+
+/* Post header and avatar */
+.post-avatar {
+    width: 130px;
+    height: 130px;
+    margin-right: 15px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 @media (max-width: 600px) {
@@ -36,24 +51,28 @@
     }
 }
 
-.avatar img {
-    max-width: 100%;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #0b84f3;
-    margin-bottom: 20px;
+/* Avatar in signed-up users */
+.avatar-signed-up-users .post-avatar {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #0b84f3;
 }
 
-.post-avatar {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    margin-right: 15px;
-    object-fit: cover;
+.post-more-info-content .avatar-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 10px;
+    justify-content: start;
+    margin-top: 10px;
 }
 
+.post-more-info-content .avatar img {
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Post information */
 .post-info {
     display: flex;
     flex-direction: column;
@@ -67,27 +86,37 @@
     margin-bottom: 10px;
 }
 
-.fa-map-location-dot, .fa-person-running, .fa-chart-simple, .fa-users {
+.post-cityName,
+.post-sportType,
+.post-skillLevel,
+.post-peopleStatus {
+    color: blue;
+}
+
+.post-cityName,
+.post-sportType,
+.post-skillLevel {
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.post-peopleStatus {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.fa-map-location-dot,
+.fa-person-running,
+.fa-chart-simple,
+.fa-users {
     width: 20px;
     height: 20px;
     color: blue;
     margin-right: 8px;
 }
 
-.post-cityName, .post-sportType, .post-skillLevel {
-    margin: 5px 0;
-    align-items: center;
-    color: blue;
-    font-size: 20px;
-}
-
-.post-peopleStatus {
-    display: flex;
-    color: blue;
-    align-items: center;
-    font-size: 16px;
-}
-
+/* Post footer */
 .post-footer {
     display: flex;
     justify-content: space-between;
@@ -95,12 +124,13 @@
 }
 
 .post-additionalInfo {
+    flex-grow: 1;
     margin-right: 5px;
     color: blue;
     font-size: 20px;
-    flex-grow: 1;
 }
 
+/* More info section */
 .post-more-info {
     margin-top: 10px;
     text-align: center;
@@ -109,44 +139,31 @@
 .post-more-info-summary {
     cursor: pointer;
     user-select: none;
+    padding: 10px 20px;
+    margin-bottom: 10px;
     background: #ddd;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px 20px;
     font-size: 14px;
-    color: blue;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
     font-weight: bold;
     color: #007BFF;
-    margin-bottom: 10px;
 }
 
 .post-more-info-content {
-    padding: 15px;
-    border-top: 1px solid #ccc;
-    margin-top: 5px;
-    background: #f9f9f9;
     display: grid;
-    text-align: left;
-    font-size: 20px;
     grid-template-columns: max-content auto;
     gap: 10px 20px;
-    max-height: none;
-    overflow: visible;
-    background-color: #f9f9f9;
+    padding: 15px;
+    margin-top: 5px;
+    background: #f9f9f9;
     border: 1px solid #ddd;
+    border-top: 1px solid #ccc;
     border-radius: 5px;
-}
-
-
-.post-more-info-content > div {
-    display: contents;
+    text-align: left;
+    font-size: 20px;
 }
 
 .post-more-info[open] .post-more-info-content {
-    display: grid;
     max-height: 800px;
 }
 
@@ -154,23 +171,28 @@
     overflow: hidden;
 }
 
+.post-more-info-content > div {
+    display: contents;
+}
+
 .info-value {
     font-weight: bold;
 }
 
+/* Sign-up button */
 .signUp {
     display: inline-block;
     padding: 10px 20px;
+    margin: 0 auto;
     font-size: 16px;
     font-weight: bold;
-    align-self: center;
-    text-align: center;
     color: white;
     background-color: #007BFF;
     border: none;
-    margin: 0 auto;
     border-radius: 5px;
     cursor: pointer;
+    align-self: center;
+    text-align: center;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -178,32 +200,22 @@
     margin-top: 1rem;
 }
 
+/* Form styles */
 form {
-    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-end;
     min-height: 100%;
 }
 
 .registerForm {
-    text-align: center;
     display: flex;
     align-items: center;
+    text-align: center;
 }
 
 .registerMessage {
-    color: red;
     margin-top: 10px;
     font-size: 16px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "Varela Round", sans-serif;
+    color: red;
 }

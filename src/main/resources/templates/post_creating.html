@@ -13,13 +13,19 @@
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
-    <link rel="stylesheet" href="css/post_creating.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link href="/css/common/background.css" rel="stylesheet"/>
+    <link href="/css/post_creating.css" rel="stylesheet">
+    <link href="/css/fragments/navigation_bar_fragment.css" rel="stylesheet">
 </head>
 <body>
+<div th:insert="~{fragments/navigation_bar_fragment :: navbar}"></div>
+
 <div class="container">
     <h2>Tworzenie postu</h2>
-
-    <form action="/api/posts/create" method="POST">
+    <form th:action="@{/api/posts/create}" method="POST">
         <div class="input-group">
             <label for="sports">Wybierz sport</label>
             <select id="sports" name="sportName" required>
@@ -88,6 +94,6 @@
         </div>
     </form>
 </div>
-<script src="js/post_creating.js"></script>
+<script src="/js/post_creating.js"></script>
 </body>
 </html>

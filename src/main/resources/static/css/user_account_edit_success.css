@@ -4,13 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Nunito', sans-serif;
-    background-color: #f4f7fc;
-    color: #333;
-    line-height: 1.6;
-}
-
 .container {
     width: 100%;
     max-width: 900px;

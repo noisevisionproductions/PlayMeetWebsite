@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <div th:fragment="post" class="post">
     <div class="post-header">
         <div class="avatar">
-            <img th:src="${post.avatar != null} ? ${post.avatar} : '/assets/post/sample_avatar.png'"
-                 alt="Avatar użytkownika" class="post-avatar" src="">
+            <a th:href="@{/user_account/{userId}(userId=${post.userId})}">
+                <img th:src="${post.avatar != null} ? ${post.avatar} : '/assets/post/sample_avatar.png'"
+                     alt="Avatar użytkownika" class="post-avatar" src="">
+            </a>
         </div>
         <div class="post-info">
             <div class="post-cityName">
                 <i class="fa-solid fa-map-location-dot"></i>
-                <span th:text="${post.cityName}">Miasto</span>
+                <span th :text="${post.cityName}">Miasto</span>
             </div>
             <div class="post-sportType">
                 <i class="fa-solid fa-person-running"></i>
@@ -40,11 +42,17 @@
             <div class="">Post ID: <span class="info-value" th:text="${post.postId}"></span></div>
             <div>Zapisani:
                 <div th:if="${post.registrations != null && #lists.isEmpty(post.registrations)}">Brak zapisanych</div>
-                <div th:each="user : ${post.registrations}" th:if="${post.registrations != null}">
-                    <div class="avatar">
-                        <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
+                <div class="avatar-container">
+
+                    <div th:each="user : ${post.registrations}" th:if="${post.registrations != null}">
+                        <a th:href="@{/user_account/{userId}(userId=${user.userId})}">
+                            <div class="avatar-signed-up-users">
+                                <img th:src="${user.avatar}" alt="Avatar" class="post-avatar" src=""/>
+                            </div>
+                        </a>
                     </div>
                 </div>
+
             </div>
         </div>
         <div>
@@ -58,12 +66,11 @@
                         th:if="${#lists.contains(userRegisteredPosts, post) && post.userId != loggedInUserId}"
                         onclick="unregisterFromPost(this)">Wypisz się
                 </button>
-
                 <div class="registerMessage"></div>
             </form>
 
         </div>
     </details>
-    <script src="/js/post_fragment.js" defer></script>
+    <script src="/js/fragments/post_fragment.js" defer></script>
 </div>
 </html>
