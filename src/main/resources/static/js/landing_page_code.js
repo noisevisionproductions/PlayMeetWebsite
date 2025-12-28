@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 const checkUserSession = async () => {
     try {
-        const response = await fetch('http://localhost:8080/auth/user/session');
+        const response = await fetch('/auth/user/session');
         if (!response.ok){
             throw new Error('Failed to fetch user session');
         }

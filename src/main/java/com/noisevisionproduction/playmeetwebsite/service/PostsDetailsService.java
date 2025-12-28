@@ -28,7 +28,7 @@ public class PostsDetailsService extends LogsPrint {
     }
 
     public List<PostModel> getPostsWhereUserRegistered(String userId) throws ExecutionException, InterruptedException {
-        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsByUserId(userId);
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByUserId(userId);
 
         List<String> postIds = registrations.stream()
                 .map(regs -> (String) regs.get("postId"))
@@ -73,7 +73,7 @@ public class PostsDetailsService extends LogsPrint {
     }
 
     private void registrationsOfThePosts(PostModel postModel) {
-        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPost(postModel.getPostId());
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByPostId(postModel.getPostId());
         List<UserModel> signedUpUsers = registrations.stream()
                 .map(registration -> (String) registration.get("userId"))
                 .filter(Objects::nonNull)

@@ -1,6 +1,7 @@
 package com.noisevisionproduction.playmeetwebsite.controller;
 
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
+import com.noisevisionproduction.playmeetwebsite.service.CookieService;
 import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,9 @@ class PostsDisplayControllerTest {
 
     @Mock
     private PostsDetailsService postsDetailsServiceMock;
+
+    @Mock
+    private CookieService cookieService;
 
     @Mock
     private Model modelMock;

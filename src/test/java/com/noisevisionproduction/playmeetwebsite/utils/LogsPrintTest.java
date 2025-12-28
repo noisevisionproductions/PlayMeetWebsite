@@ -28,9 +28,7 @@ class LogsPrintTest{
         String errorMessage = "Test error message";
         Throwable throwable = new RuntimeException("Test exception");
 
-/*
         testLogsPrint.logError(errorMessage, throwable);
-*/
 
         verify(logger).error(errorMessage, throwable);
     }

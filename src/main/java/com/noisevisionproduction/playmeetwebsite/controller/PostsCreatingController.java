@@ -35,5 +35,4 @@ public class PostsCreatingController {
                 .location(URI.create("/?postId=" + postId))
                 .build();
     }
-
 }

@@ -2,11 +2,9 @@ package com.noisevisionproduction.playmeetwebsite.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +17,6 @@ public class ApiService {
     private final List<String> sports;
     private final List<String> citiesInPoland;
     private final Map<String, String> skillLevel;
-    private static final String API_URL = "https://api.alternative.me/fng/?limit=1";
 
     @Autowired
     public ApiService() throws IOException {
@@ -34,23 +31,6 @@ public class ApiService {
         });
         skillLevel = objectMapper.readValue(inputStreamForSkillLevel, new TypeReference<>() {
         });
-    }
-
-    public String getCryptoFearAndGreedIndex() {
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(API_URL, String.class);
-
-        if (response != null) {
-            JSONObject jsonObject = new JSONObject(response);
-
-            JSONObject data = jsonObject.getJSONArray("data").getJSONObject(0);
-
-            String value = data.getString("value");
-            String classification = data.getString("value_classification");
-
-            return "Aktualny index Bitcoin Fear & Gread: " + value + " (" + classification + ")";
-        }
-        return null;
     }
 
     public List<String> getAllSports() {

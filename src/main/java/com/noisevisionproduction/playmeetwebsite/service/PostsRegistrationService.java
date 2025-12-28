@@ -7,7 +7,6 @@ import com.google.firebase.database.Transaction;
 import com.noisevisionproduction.playmeetwebsite.model.RegistrationModel;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import com.google.cloud.Timestamp;
 
@@ -28,7 +27,7 @@ public class PostsRegistrationService extends LogsPrint {
         this.firebaseDatabase = firebaseDatabase;
     }
 
-    public List<Map<String, Object>> getRegistrationsForPost(String postId) {
+    public List<Map<String, Object>> getRegistrationsForPostByPostId(String postId) {
         try {
             ApiFuture<QuerySnapshot> apiFuture = firestore.collection("registrations")
                     .whereEqualTo("postId", postId)
@@ -45,7 +44,7 @@ public class PostsRegistrationService extends LogsPrint {
         }
     }
 
-    public List<Map<String, Object>> getRegistrationsByUserId(String userId) {
+    public List<Map<String, Object>> getRegistrationsForPostByUserId(String userId) {
         try {
             ApiFuture<QuerySnapshot> future = firestore.collection("registrations")
                     .whereEqualTo("userId", userId)

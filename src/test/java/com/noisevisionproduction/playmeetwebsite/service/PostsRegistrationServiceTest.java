@@ -13,10 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +58,7 @@ class PostsRegistrationServiceTest {
     }
 
     @Test
-    public void testGetRegistrationsForPost() throws ExecutionException, InterruptedException {
+    public void testGetRegistrationsForPostByPostId() throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> documentSnapshots = new ArrayList<>();
         Map<String, Object> registrationData = new HashMap<>();
         registrationData.put("userId", "testUser");
@@ -74,7 +71,7 @@ class PostsRegistrationServiceTest {
         when(collectionReferenceMock.whereEqualTo("postId", "12345")).thenReturn(queryMock);
         when(queryMock.get()).thenReturn(futureMock);
 
-        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPost("12345");
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByPostId("12345");
 
         assertNotNull(registrations);
         assertFalse(registrations.isEmpty());
@@ -83,32 +80,54 @@ class PostsRegistrationServiceTest {
         // Throw error
         when(futureMock.get()).thenThrow(new RuntimeException("Error fetching registrations for post ID"));
 
-        List<Map<String, Object>> errorRegistrations = postsRegistrationService.getRegistrationsForPost("12345");
+        List<Map<String, Object>> errorRegistrations = postsRegistrationService.getRegistrationsForPostByPostId("12345");
 
         assertNotNull(errorRegistrations);
         assertTrue(errorRegistrations.isEmpty());
     }
 
     @Test
-    public void testGetRegistrationsForPostEmpty() throws ExecutionException, InterruptedException {
+    void getRegistrationsForPostByUserId() throws ExecutionException, InterruptedException {
+        String userId = "userId";
+        Map<String, Object> mockData = new HashMap<>();
+        mockData.put("postId", "postId");
+        mockData.put("userId", userId);
+
+        when(firestoreMock.collection("registrations")).thenReturn(collectionReferenceMock);
+        when(collectionReferenceMock.whereEqualTo("userId", userId)).thenReturn(queryMock);
+        when(queryMock.get()).thenReturn(futureMock);
+
+        when(futureMock.get()).thenReturn(querySnapshotMock);
+        when(querySnapshotMock.getDocuments()).thenReturn(Collections.singletonList(documentSnapshotMock));
+        when(documentSnapshotMock.getData()).thenReturn(mockData);
+
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByUserId(userId);
+
+        assertNotNull(registrations);
+        assertEquals(1, registrations.size());
+        assertEquals(mockData, registrations.get(0));
+    }
+
+    @Test
+    public void testGetRegistrationsForPostByPostIdEmpty() throws ExecutionException, InterruptedException {
         when(futureMock.get()).thenReturn(querySnapshotMock);
         when(querySnapshotMock.getDocuments()).thenReturn(new ArrayList<>());
         when(collectionReferenceMock.whereEqualTo("postId", "12345")).thenReturn(queryMock);
         when(queryMock.get()).thenReturn(futureMock);
 
-        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPost("12345");
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByPostId("12345");
 
         assertNotNull(registrations);
         assertTrue(registrations.isEmpty());
     }
 
     @Test
-    public void testGetRegistrationsForPostThrowsException() throws ExecutionException, InterruptedException {
+    public void testGetRegistrationsForPostByPostIdThrowsException() throws ExecutionException, InterruptedException {
         when(futureMock.get()).thenReturn(querySnapshotMock);
         when(collectionReferenceMock.whereEqualTo("postId", "12345")).thenReturn(queryMock);
         when(queryMock.get()).thenReturn(futureMock);
 
-        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPost("12345");
+        List<Map<String, Object>> registrations = postsRegistrationService.getRegistrationsForPostByPostId("12345");
 
         assertNotNull(registrations);
         assertTrue(registrations.isEmpty());
@@ -191,9 +210,23 @@ class PostsRegistrationServiceTest {
         String userId = "userId";
         ApiFuture<DocumentReference> apiFuture = mock(ApiFuture.class);
         DocumentReference documentReference = mock(DocumentReference.class);
+        DatabaseReference userReference = mock(DatabaseReference.class);
+        DatabaseReference joinedPostsCountReference = mock(DatabaseReference.class);
 
         when(collectionReferenceMock.add(any(RegistrationModel.class))).thenReturn(apiFuture);
         when(apiFuture.get()).thenReturn(documentReference);
+
+        when(firebaseDatabase.getReference("UserModel/" + userId)).thenReturn(userReference);
+        when(userReference.child("joinedPostsCount")).thenReturn(joinedPostsCountReference);
+
+        doAnswer(invocation -> {
+            Transaction.Handler handler = invocation.getArgument(0);
+            MutableData mutableData = mock(MutableData.class);
+            when(mutableData.getValue(Integer.class)).thenReturn(1);
+            handler.doTransaction(mutableData);
+            handler.onComplete(null, true, mock(DataSnapshot.class));
+            return null;
+        }).when(joinedPostsCountReference).runTransaction(any(Transaction.Handler.class));
 
         doNothing().when(postsService).incrementSignedUpCount(postId, true);
         postsRegistrationService.updateUserJoinedPostsCount(userId, true);

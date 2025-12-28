@@ -1,32 +1,63 @@
-# About PlayMeet Website
+# PlayMeet Website
 
-I decided to create a web version of the PlayMeet app so I could learn more about Spring Boot. Even at first, I was overwhelmed by stuff that I needed to know and Spring Boot annotations were like black magic to me. in the long run, I think it was a great choice. I had to learn not only Spring but also HTML and CSS along with that for better design. I tried not to touch JavaScript but it was also almost impossible, in the end, I touched the basics of it. Thanks to documentation and my trial and error, I know more about Spring Boot and I admire its simplicity and speed for coding web apps.
-Putting aside the amount of knowledge I had to have, I knew that one day I needed to know more about code testing in Java. That's why in this project I created my first unit tests using JUnit and Mockito and started to play with them.
+**The Web Companion to PlayMeet.** A Spring Boot application serving as both a landing page and a web-based management
+portal for the PlayMeet ecosystem.
 
-# Features
+## 📖 The Story Behind the Web Portal
 
-For now, I'm mirroring functionality from my Android app in order to understand Spring Boot. Because of that, I could learn more about data integration and synchronicity, because in both instances I'm using Firebase products (Realtime Database, Firestore, Auth, Storage).
+After building the PlayMeet Android app, I realized I needed to expand my horizons beyond mobile development. I decided
+to create a web version of PlayMeet to challenge myself and dive deep into Spring Boot.
 
-## Design
+Initially, the goal was simple: create a landing page to showcase the app. However, as I got comfortable with the
+framework, the project evolved. I started adding functionality to manage posts from the web, effectively mirroring parts
+of the Android app's logic.
 
-In the beginning, I knew nothing about front-end so I generated HTML and CSS code with the help of Chat-GPT, but with time, as I started to play along with his examples, by nature I understood it more, and day by day I became comfortable with creating my own design, but I still prefer to spend more time perfecting back-end.
+To be honest, at first, Spring Boot annotations felt like "black magic." The learning curve was steep, and I was
+overwhelmed by the ecosystem. But in the long run, it was a fantastic choice. Thanks to documentation and a lot of trial
+and error, I grew to admire Spring's simplicity and speed.
 
-# License and Use Restrictions
+## ✨ Features & Architecture
 
-This project is for portfolio viewing purposes only. All rights are reserved under copyright law.
-The following restrictions apply:
+This project is a monolithic web application that integrates deeply with the existing Firebase infrastructure used by
+the mobile app.
 
-No Use: This project and its contents may not be used, copied, modified, merged, published,
-distributed, sublicensed, and/or sold without the express permission of the author.
+* **Landing Page:** A promotional front-end for the mobile application.
+* **Post Management:** Allows users to view and manage game posts via a web interface.
+* **Data Synchronization:** Mirrors functionality from the Android app, ensuring data consistency across platforms using
+  Firebase Realtime Database and Firestore.
+* **Secure Authentication:** Integrates Spring Security with Firebase Authentication.
 
-No Modification: The code and associated documentation files may not be modified in any way.
+## 🛠 Tech Stack
 
-Viewing Only: This project is made available for viewing purposes only as part of the author's
-portfolio. It is intended to showcase the author's coding skills and capabilities to potential
-employers or clients.
+While the Android app focused on native mobile SDKs, this project was my playground for backend web technologies and
+testing.
 
-By accessing and viewing this project, you acknowledge and agree that you have read and understand
-these restrictions, and agree to be bound by them. If you do not agree with these terms, you are
-prohibited from using or accessing this site and its code.
+### Backend
 
-All Rights Reserved
+* **Framework:** Spring Boot 3.2.2
+* **Language:** Java 17
+* **Template Engine:** Thymeleaf (with Spring Security extras)
+* **Security:** Spring Security
+
+### Data & Infrastructure
+
+* **Firebase Admin SDK:** Used for backend access to Firestore and Realtime Database
+* **Deployment:** Configured for Google App Engine
+* **Build Tool:** Gradle (Kotlin DSL)
+
+### Frontend Tools
+
+* **Styling:** HTML, CSS, and `purgecss` for removing unused styles
+* **Bundling:** Webpack
+
+### Testing (The "Firsts")
+
+Aside from learning a new framework, I had a specific goal for this project: **mastering testing**. I knew that to be a
+better developer, I needed to understand how to verify my code automatically.
+
+* This project contains my **first unit tests ever**.
+* I learned to use **JUnit** for test structuring and **Mockito** to mock external dependencies (like the database).
+
+## License and Use Restrictions
+
+This project is created for educational and experimental purposes. All rights reserved.

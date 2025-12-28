@@ -2,7 +2,10 @@ package com.noisevisionproduction.playmeetwebsite.controller;
 
 import com.noisevisionproduction.playmeetwebsite.model.PostModel;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
-import com.noisevisionproduction.playmeetwebsite.service.*;
+import com.noisevisionproduction.playmeetwebsite.service.CookieService;
+import com.noisevisionproduction.playmeetwebsite.service.FileStorageService;
+import com.noisevisionproduction.playmeetwebsite.service.PostsDetailsService;
+import com.noisevisionproduction.playmeetwebsite.service.UserService;
 import com.noisevisionproduction.playmeetwebsite.service.dataEncryption.EncryptionService;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,18 +28,14 @@ public class UserProfileController extends LogsPrint {
     private final CookieService cookieService;
     private final PostsDetailsService postsDetailsService;
     private final FileStorageService fileStorageService;
-    private final PostsRegistrationService postsRegistrationService;
-    private final PostsService postsService;
 
     @Autowired
-    public UserProfileController(UserService userService, EncryptionService encryptionService, CookieService cookieService, PostsDetailsService postsDetailsService, FileStorageService fileStorageService, PostsRegistrationService postsRegistrationService, PostsService postsService) {
+    public UserProfileController(UserService userService, EncryptionService encryptionService, CookieService cookieService, PostsDetailsService postsDetailsService, FileStorageService fileStorageService) {
         this.userService = userService;
         this.encryptionService = encryptionService;
         this.cookieService = cookieService;
         this.postsDetailsService = postsDetailsService;
         this.fileStorageService = fileStorageService;
-        this.postsRegistrationService = postsRegistrationService;
-        this.postsService = postsService;
     }
 
     @GetMapping("/{userId}")
@@ -65,7 +64,10 @@ public class UserProfileController extends LogsPrint {
     }
 
     @PostMapping("/{userId}/edit")
-    public String updateProfile(@PathVariable String userId, @ModelAttribute("user") UserModel userModel, @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile, Model model) {
+    public String updateProfile(@PathVariable String userId,
+                                @ModelAttribute("user") UserModel userModel,
+                                @RequestParam(value = "avatarFile", required = false)
+                                MultipartFile avatarFile, Model model) {
         try {
             if (!avatarFile.isEmpty()) {
                 String avatarUrl = fileStorageService.uploadAvatarToFirebase(avatarFile, userId);
@@ -78,7 +80,6 @@ public class UserProfileController extends LogsPrint {
             model.addAttribute("updateError", "Wystąpił błąd podczas przesyłania avatara." + e);
             logError("Avatar update error: ", e);
         }
-
         return "user_account_edit_success";
     }
 

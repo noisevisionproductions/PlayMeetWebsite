@@ -7,7 +7,7 @@ let auth;
 
 const fetchFirebaseConfig = async () => {
     try {
-        const response = await fetch('http://localhost:8080/api/config/firebase');
+        const response = await fetch('/api/config/firebase');
         if (!response.ok) {
             throw new Error('Failed to load Firebase config');
         }
@@ -36,7 +36,7 @@ const handleLogin = async () => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const token = await userCredential.user.getIdToken();
 
-        const response = await fetch('http://localhost:8080/auth/verifyToken', {
+        const response = await fetch('/auth/verifyToken', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,16 +62,5 @@ class ApiControllerTest {
         apiController.getSkillLevelName(model);
 
         verify(model).addAttribute("skillLevelNames", skillLevel);
-    }
-
-    @Test
-    void getFearGreedIndex() {
-        String fearGreedIndex = "Extreme Fear";
-        when(apiService.getCryptoFearAndGreedIndex()).thenReturn(fearGreedIndex);
-
-        String result = apiController.getFearGreedIndex(model);
-
-        verify(model).addAttribute("fearGreedIndex", fearGreedIndex);
-        assertEquals("login_page", result);
     }
 }

@@ -56,7 +56,7 @@ class PostsDetailsServiceTest {
 
         when(postsServiceMock.getPosts()).thenReturn(posts);
         when(userServiceMock.getUserById("user1")).thenReturn(CompletableFuture.completedFuture(userModel));
-        when(postsRegistrationServiceMock.getRegistrationsForPost("post1")).thenReturn(listOfRegistrations);
+        when(postsRegistrationServiceMock.getRegistrationsForPostByPostId("post1")).thenReturn(listOfRegistrations);
         when(userServiceMock.getUserById("user2")).thenReturn(CompletableFuture.completedFuture(registeredUser));
 
         List<PostModel> result = postsDetailsService.getAllPosts();
@@ -71,7 +71,7 @@ class PostsDetailsServiceTest {
 
         verify(postsServiceMock, times(1)).getPosts();
         verify(userServiceMock, times(1)).getUserById("user1");
-        verify(postsRegistrationServiceMock, times(1)).getRegistrationsForPost("post1");
+        verify(postsRegistrationServiceMock, times(1)).getRegistrationsForPostByPostId("post1");
         verify(userServiceMock, times(1)).getUserById("user2");
     }
 
