@@ -57,7 +57,3 @@ better developer, I needed to understand how to verify my code automatically.
 
 * This project contains my **first unit tests ever**.
 * I learned to use **JUnit** for test structuring and **Mockito** to mock external dependencies (like the database).
-
-## License and Use Restrictions
-
-This project is created for educational and experimental purposes. All rights reserved.
