@@ -4,11 +4,22 @@ public class UserModel {
     private String fcmToken;
     private String userId;
     private String nickname;
+
+    @EncryptedField
     private String name;
+
+    @EncryptedField
     private String age;
+
+    @EncryptedField
     private String gender;
+
+    @EncryptedField
     private String location;
+
+    @EncryptedField
     private String aboutMe;
+
     private String avatar;
     private int joinedPostsCount = 0;
 

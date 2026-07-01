@@ -1,5 +1,6 @@
 package com.noisevisionproduction.playmeetwebsite.service.dataEncryption;
 
+import com.noisevisionproduction.playmeetwebsite.model.EncryptedField;
 import com.noisevisionproduction.playmeetwebsite.model.UserModel;
 import com.noisevisionproduction.playmeetwebsite.utils.LogsPrint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,74 +9,146 @@ import org.springframework.stereotype.Service;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Objects;
 
 @Service
 public class EncryptionService extends LogsPrint {
 
-    private final byte[] key;
+    private final KeyLoaderForEncryptionService keyLoader;
+    private final SecureRandom secureRandom;
+    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
 
     @Autowired
     public EncryptionService(KeyLoaderForEncryptionService keyLoader) {
-        this.key = keyLoader.getKey();
+        this.keyLoader = keyLoader;
+        this.secureRandom = new SecureRandom();
     }
 
     public String encrypt(String valueToEnc) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        SecretKeySpec keySpec = new SecretKeySpec(Arrays.copyOf(this.key, 16), "AES");
-        IvParameterSpec ivSpec = new IvParameterSpec(Arrays.copyOf(this.key, cipher.getBlockSize()));
+        if (valueToEnc == null || valueToEnc.isEmpty()) {
+            return valueToEnc;
+        }
+
+        String activeKeyId = keyLoader.getActiveKeyId();
+        byte[] activeKey = keyLoader.getKey(activeKeyId);
+
+        byte[] iv = new byte[16];
+        secureRandom.nextBytes(iv);
+
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        SecretKeySpec keySpec = new SecretKeySpec(Arrays.copyOf(activeKey, 16), "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(Arrays.copyOf(activeKey, cipher.getBlockSize()));
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-        byte[] cipherText = cipher.doFinal(valueToEnc.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(cipherText);
+
+        byte[] cryptogram = cipher.doFinal(valueToEnc.getBytes(StandardCharsets.UTF_8));
+        byte[] keyIdBytes = activeKeyId.getBytes(StandardCharsets.UTF_8);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1 + keyIdBytes.length + 16 + cryptogram.length);
+        byteBuffer.put((byte) keyIdBytes.length);
+        byteBuffer.put(keyIdBytes);
+        byteBuffer.put(iv);
+        byteBuffer.put(cryptogram);
+
+        return Base64.getEncoder().encodeToString(byteBuffer.array());
     }
 
     public String decrypt(String encryptedValue) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(this.key, 16), "AES");
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(this.key, cipher.getBlockSize()));
-        byte[] encValue = Base64.getDecoder().decode(encryptedValue);
-        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-        byte[] decryptedValue = cipher.doFinal(encValue);
-        return new String(decryptedValue, StandardCharsets.UTF_8);
+        if (encryptedValue == null || encryptedValue.isEmpty()) {
+            return encryptedValue;
+        }
+
+        byte[] decoded = Base64.getDecoder().decode(encryptedValue);
+        boolean isNewFormat = false;
+        String keyId;
+        byte[] keyToUse = null;
+        int keyIdLength = decoded[0];
+
+        if (keyIdLength > 0 && keyIdLength < 20 && decoded.length > (1 + keyIdLength + 16)) {
+            keyId = new String(decoded, 1, keyIdLength, StandardCharsets.UTF_8);
+            keyToUse = keyLoader.getKey(keyId);
+
+            if (keyToUse != null) {
+                isNewFormat = true;
+            }
+        }
+
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+
+        if (isNewFormat) {
+            byte[] iv = new byte[16];
+            System.arraycopy(decoded, 1 + keyIdLength, iv, 0, 16);
+
+            int cryptogramLength = decoded.length - (1 + keyIdLength + 16);
+            byte[] cryptogram = new byte[cryptogramLength];
+            System.arraycopy(decoded, 1 + keyIdLength + 16, cryptogram, 0, cryptogramLength);
+
+            SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(keyToUse, 16), "AES");
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+
+            byte[] decryptedValue = cipher.doFinal(cryptogram);
+            return new String(decryptedValue, StandardCharsets.UTF_8);
+        } else {
+            byte[] legacyKey = keyLoader.getLegacyKey();
+            SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(legacyKey, 16), "AES");
+
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(Arrays.copyOf(legacyKey, 16));
+
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+            byte[] decryptedValue = cipher.doFinal(decoded);
+            return new String(decryptedValue, StandardCharsets.UTF_8);
+        }
+    }
+
+    private void processAnnotatedFields(Object model, boolean isEncryption) {
+        if (model == null) {
+            return;
+        }
+
+        Field[] fields = model.getClass().getDeclaredFields();
+
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(EncryptedField.class) && field.getType().equals(String.class)) {
+                try {
+                    field.setAccessible(true);
+                    String currentValue = (String) field.get(model);
+
+                    if (currentValue != null && !currentValue.isEmpty()) {
+                        String newValue;
+                        if (isEncryption) {
+                            newValue = encrypt(currentValue);
+                        } else {
+                            newValue = decrypt(currentValue);
+                        }
+
+                        field.set(model, newValue);
+                    }
+                } catch (Exception e) {
+                    logError("Error processing field: " + field.getName(), e);
+                }
+            }
+        }
     }
 
     public void encryptUserData(UserModel userModel) {
-        try {
-            if (userModel.getName() != null) {
-                userModel.setName(encrypt(userModel.getName()));
-            }
-            if (userModel.getLocation() != null) {
-                userModel.setLocation(encrypt(userModel.getLocation()));
-            }
-            if (userModel.getAboutMe() != null) {
-                userModel.setAboutMe(encrypt(userModel.getAboutMe()));
-            }
-        } catch (Exception e) {
-            logError("Encryption error: ", e);
-        }
+        processAnnotatedFields(userModel, true);
     }
 
     public void decryptUserData(UserModel userModel) {
-        try {
-            if (userModel.getName() != null) {
-                userModel.setName(decrypt(userModel.getName()));
-            }
-            if (userModel.getAge() != null) {
-                userModel.setAge(decrypt(userModel.getAge()));
-            }
-            if (userModel.getLocation() != null) {
-                userModel.setLocation(decrypt(userModel.getLocation()));
-            }
-            if (userModel.getGender() != null) {
-                userModel.setGender(decrypt(userModel.getGender()));
-            }
-            if (userModel.getAboutMe() != null) {
-                userModel.setAboutMe(decrypt(userModel.getAboutMe()));
-            }
-        } catch (Exception e) {
-            logError("Decryption error: ", e);
-        }
+        processAnnotatedFields(userModel, true);
+    }
+
+    public void encryptModel(Object anyModel) {
+        processAnnotatedFields(anyModel, true);
+    }
+
+    public void decryptModel(Object anyModel) {
+        processAnnotatedFields(anyModel, true);
     }
 }
