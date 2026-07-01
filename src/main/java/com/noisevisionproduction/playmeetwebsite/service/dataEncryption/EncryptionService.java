@@ -43,7 +43,7 @@ public class EncryptionService extends LogsPrint {
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(Arrays.copyOf(activeKey, 16), "AES");
-        IvParameterSpec ivSpec = new IvParameterSpec(Arrays.copyOf(activeKey, cipher.getBlockSize()));
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
         byte[] cryptogram = cipher.doFinal(valueToEnc.getBytes(StandardCharsets.UTF_8));
@@ -141,7 +141,7 @@ public class EncryptionService extends LogsPrint {
     }
 
     public void decryptUserData(UserModel userModel) {
-        processAnnotatedFields(userModel, true);
+        processAnnotatedFields(userModel, false);
     }
 
     public void encryptModel(Object anyModel) {
@@ -149,6 +149,6 @@ public class EncryptionService extends LogsPrint {
     }
 
     public void decryptModel(Object anyModel) {
-        processAnnotatedFields(anyModel, true);
+        processAnnotatedFields(anyModel, false);
     }
 }
